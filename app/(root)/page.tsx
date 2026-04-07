@@ -5,7 +5,7 @@ export default function WelcomePage() {
     <section className="mainContent">
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-6 text-center">
         <h1 className="text-4xl font-semibold">Welcome to CarLog</h1>
-        <p className="text-sm text-[color:var(--muted)]">
+        <p className="text-sm text-(--muted)">
           CarLog helps you keep a complete service history for every vehicle.
           Track inspections, costs, and documents in one clean dashboard.
         </p>

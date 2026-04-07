@@ -13,7 +13,7 @@ async function signInWithGoogle(): Promise<never> {
     try {
         await signIn("google", {
           redirect: true,   // NextAuth bo izvedel redirect
-          redirectTo: "/dashboard",  // Po prijavi preusmeri na dashboard
+          redirectTo: "/",  // Po prijavi preusmeri na dashboard
         });
         // Ta koda bi se izvedla le, če redirect ne bi uspel
         throw new Error("Google sign-in did not initiate redirect.");

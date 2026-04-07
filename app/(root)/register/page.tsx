@@ -30,7 +30,7 @@ const RegisterPage = () => {
         }
 
         // Uspešna registracija → home
-        router.push("/dashboard");
+        router.push("/");
         router.refresh();
     }
 
