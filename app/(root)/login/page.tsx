@@ -36,7 +36,7 @@ const Login = () => {
                 }
                 
                 // Uspešna prijava
-                router.push("/dashboard");
+                router.push("/");
                 router.refresh();
             }
             // Google login tukaj ne pride do konca
