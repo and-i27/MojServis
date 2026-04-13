@@ -16,9 +16,15 @@ const Navbar = async () => {
         <div className="flex items-center gap-5">
            {session ? (
             <>
-          <Link href="/profile">
-            <button className="btn min-w-30">Moj Profil</button>
-          </Link>
+            <Link href="/vehicle/create">
+              <button className="btn min-w-30">Add vehicle</button>
+            </Link>
+            <Link href="/todo">
+              <button className="btn min-w-30">To-do</button>
+            </Link>
+            <Link href="/profile">
+              <button className="btn min-w-30">Moj Profil</button>
+            </Link>
           <form
             action={async () => {
               "use server";
