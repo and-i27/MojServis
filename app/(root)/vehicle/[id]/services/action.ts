@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { serverClient } from "@/sanity/lib/serverClient";
+import { writeClient } from '@/sanity/lib/WriteClient';
 import { requireUser } from "@/lib/requireUser";
 
 type ServiceActionResult = {
@@ -17,7 +17,7 @@ export async function createVehicleService(
   try {
     const { userId } = await requireUser();
 
-    const car = await serverClient.fetch(
+    const car = await writeClient.fetch(
       `*[_type == "car" && _id == $carId && owner._ref == $userId][0]{ _id }`,
       { carId, userId }
     );
@@ -44,7 +44,7 @@ export async function createVehicleService(
     const odometer = odometerRaw ? Number(odometerRaw) : undefined;
     const cost = costRaw ? Number(costRaw) : undefined;
 
-    await serverClient.create({
+    await writeClient.create({
       _type: "serviceRecord",
       title,
       description: description || undefined,

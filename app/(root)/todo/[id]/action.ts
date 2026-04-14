@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { serverClient } from "@/sanity/lib/serverClient";
+import { writeClient } from '@/sanity/lib/WriteClient';
 import { requireUser } from "@/lib/requireUser";
 
 type TodoMutationResult = {
@@ -11,7 +11,7 @@ type TodoMutationResult = {
 };
 
 async function getOwnedTodo(id: string, userId: string) {
-  return serverClient.fetch(
+  return writeClient.fetch(
     `*[_type == "todo" && _id == $id && user._ref == $userId][0]{
       _id,
       "carId": car->_id
@@ -57,7 +57,7 @@ export async function updateTodo(
       return { success: false, error: "Due date is required." };
     }
 
-    await serverClient
+    await writeClient
       .patch(id)
       .set({
         title,
@@ -86,7 +86,7 @@ export async function completeTodo(id: string): Promise<TodoMutationResult> {
       return { success: false, error: "To-do not found." };
     }
 
-    await serverClient.patch(id).set({ status: "done" }).commit();
+    await writeClient.patch(id).set({ status: "done" }).commit();
 
     revalidateTodoPaths(id, todo.carId);
 
@@ -106,7 +106,7 @@ export async function deleteTodo(id: string): Promise<TodoMutationResult> {
       return { success: false, error: "To-do not found." };
     }
 
-    await serverClient.delete(id);
+    await writeClient.delete(id);
 
     revalidateTodoPaths(id, todo.carId);
 

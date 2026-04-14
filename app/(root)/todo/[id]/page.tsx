@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { requireUser } from "@/lib/requireUser";
-import TodoDetailForm from "@/components/todo/TodoDetailForm";
+import TodoDetailForm from "@/app/components/TodoDetailForm";
 
 type TodoDetailPageData = {
   _id: string;

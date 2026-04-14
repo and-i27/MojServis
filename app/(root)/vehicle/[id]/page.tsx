@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import VehicleImageGallery from "@/components/vehicle/VehicleImageGallery";
-
+import VehicleImageGallery from "@/app/components/VehicleImageGallery";
 type CarDetail = {
   _id: string;
   name: string;

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import EditVehicleForm from "@/components/vehicle/EditVehicleForm";
+import EditVehicleForm from "@/app/components/EditVehicleForm";
 
 type EditVehicleImage = {
   url: string;

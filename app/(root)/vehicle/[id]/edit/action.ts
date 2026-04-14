@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import { serverClient } from "@/sanity/lib/serverClient";
+import { writeClient } from '@/sanity/lib/WriteClient';
 
 type VehicleMutationResult = {
   success: boolean;
@@ -28,7 +28,7 @@ async function getCurrentUserId() {
     return null;
   }
 
-  const user = await serverClient.fetch(
+  const user = await writeClient.fetch(
     `*[_type == "user" && email == $email][0]{ _id }`,
     { email }
   );
@@ -37,7 +37,7 @@ async function getCurrentUserId() {
 }
 
 async function getOwnedCar(id: string, ownerId: string): Promise<CarRecord | null> {
-  return serverClient.fetch(
+  return writeClient.fetch(
     `*[_type == "car" && _id == $id && owner._ref == $ownerId][0]{
       _id,
       images
@@ -81,7 +81,7 @@ export async function updateVehicle(
 
     for (const file of imageFiles) {
       if (file instanceof File && file.size > 0) {
-        const asset = await serverClient.assets.upload("image", file, {
+        const asset = await writeClient.assets.upload("image", file, {
           filename: file.name,
         });
         newImageRefs.push({
@@ -93,7 +93,7 @@ export async function updateVehicle(
 
     const images = newImageRefs.length > 0 ? [...(car.images ?? []), ...newImageRefs] : car.images;
 
-    await serverClient
+    await writeClient
       .patch(id)
       .set({
         name,
@@ -136,7 +136,7 @@ export async function removeVehicleImage(
 
     const nextImages = (car.images ?? []).filter((image) => image.asset._ref !== assetRef);
 
-    await serverClient
+    await writeClient
       .patch(id)
       .set({
         images: nextImages.length > 0 ? nextImages : undefined,
@@ -166,7 +166,7 @@ export async function deleteVehicle(id: string): Promise<VehicleMutationResult> 
       return { success: false, error: "Vehicle not found." };
     }
 
-    await serverClient.delete(id);
+    await writeClient.delete(id);
 
     revalidatePath("/dashboard");
     revalidatePath(`/vehicle/${id}`);

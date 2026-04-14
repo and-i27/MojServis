@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { serverClient } from "@/sanity/lib/serverClient";
+import { writeClient } from '@/sanity/lib/WriteClient';
 import { requireUser } from "@/lib/requireUser";
 
 type TodoActionResult = {
@@ -17,7 +17,7 @@ export async function createVehicleTodo(
   try {
     const { userId } = await requireUser();
 
-    const car = await serverClient.fetch(
+    const car = await writeClient.fetch(
       `*[_type == "car" && _id == $carId && owner._ref == $userId][0]{ _id }`,
       { carId, userId }
     );
@@ -40,7 +40,7 @@ export async function createVehicleTodo(
       return { success: false, error: "Due date is required." };
     }
 
-    await serverClient.create({
+    await writeClient.create({
       _type: "todo",
       title,
       description: description || undefined,

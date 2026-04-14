@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { requireUser } from "@/lib/requireUser";
-import AddVehicleServiceForm from "@/components/vehicle/AddVehicleServiceForm";
+import AddVehicleServiceForm from "@/app/components/AddVehicleServiceForm";
 
 type VehicleServicesPageData = {
   _id: string;
