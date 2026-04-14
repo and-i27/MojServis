@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #e0e0e0;
   --foreground: #04376e;
 }
 
@@ -11,13 +11,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-primary: #f6861f;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #04376e;
-    --foreground: #ededed;
-  }
+  --color-secondary: #04376e;
+  --color-tertiary: #e0e0e0;
 }
 
 body {
@@ -28,7 +23,7 @@ body {
 
 @layer utilities {
   .header {
-    @apply shadow-xl p-3 bg-auto fixed top-0 w-full z-10;
+    @apply shadow-xl p-3 bg-foreground fixed top-0 w-full z-10;
   }
 
   .main {
@@ -36,14 +31,38 @@ body {
   }
 
   .footer {
-    @apply bg-auto text-center text-sm py-4;
+    @apply bg-foreground text-tertiary text-center text-sm py-4;
   }
 
   .btn {
-    @apply bg-primary rounded-md p-3 hover:opacity-75 hover:cursor-pointer;
+    @apply bg-primary text-secondary rounded-md p-3 hover:opacity-75 hover:cursor-pointer;
   }
 
   .logo-text {
     @apply ml-3 hidden sm:inline text-xl font-bold text-primary;
+  }
+
+  .auth-page {
+    @apply flex items-center justify-center flex-col mt-60;
+  }
+
+  .auth-section {
+    @apply bg-secondary text-primary shadow-xl rounded-lg p-5 w-lg;
+  }
+
+  .auth-heading {
+    @apply mb-6 text-2xl font-semibold text-center;
+  }
+
+  .auth-form {
+    @apply flex flex-col space-y-2 mx-auto w-3/5;
+  }
+
+  .text-input {
+    @apply bg-background rounded-md p-1;
+  }
+
+  .submit-btn {
+    @apply mt-2 disabled:cursor-not-allowed disabled:opacity-75;
   }
 }
