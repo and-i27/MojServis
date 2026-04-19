@@ -17,12 +17,12 @@ export async function registerUser(formData: FormData) {
 
     // Preverjanje obveznih polj
     if (!name || !email || !password) {
-      return { success: false, error: "Missing required fields" };
+      return { success: false, error: "Manjkajoča polja" };
     }
 
     // Preverjanje ujemanja gesel
     if (password !== repeatPassword) {
-      return { success: false, error: "Passwords do not match" };
+      return { success: false, error: "Gesli se ne ujemata" };
     }
 
     // Preverimo, ali uporabnik že obstaja
@@ -32,7 +32,7 @@ export async function registerUser(formData: FormData) {
     );
 
     if (existingUser) {
-      return { success: false, error: "User with this email already exists" };
+      return { success: false, error: "Uporabnik s tem e - poštnim naslovom že obstaja" };
     }
 
     // Hashiranje gesla (bcrypt)
@@ -58,6 +58,6 @@ export async function registerUser(formData: FormData) {
   } catch (err) {
     // Fallback napaka
     console.error("REGISTER ERROR:", err);
-    return { success: false, error: "Registration failed. Try again." };
+    return { success: false, error: "Registracija ni uspela. Poskusite znova." };
   }
 }

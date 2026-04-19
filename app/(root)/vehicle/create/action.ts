@@ -15,7 +15,7 @@ export async function createCar(formData: FormData): Promise<CreateCarResult> {
     const session = await auth();
     const email = session?.user?.email;
     if (!email) {
-      return { success: false, error: "You must be logged in." };
+      return { success: false, error: "Za dodajanje vozila se morate prijaviti." };
     }
 
     const name = String(formData.get("name") || "").trim();
@@ -27,7 +27,7 @@ export async function createCar(formData: FormData): Promise<CreateCarResult> {
     const notes = String(formData.get("notes") || "").trim();
 
     if (!name) {
-      return { success: false, error: "Name is required." };
+      return { success: false, error: "Ime je obvezno." };
     }
 
     const year = yearRaw ? Number(yearRaw) : undefined;
@@ -79,7 +79,6 @@ export async function createCar(formData: FormData): Promise<CreateCarResult> {
       images: imageRefs.length ? imageRefs : undefined,
     });
 
-    revalidatePath("/dashboard");
     revalidatePath(`/vehicle/${createdCar._id}`);
 
     return {
@@ -89,6 +88,6 @@ export async function createCar(formData: FormData): Promise<CreateCarResult> {
     };
   } catch (err) {
     console.error("CREATE CAR ERROR:", err);
-    return { success: false, error: "Failed to create vehicle." };
+    return { success: false, error: "Pri dodajanju vozila je prišlo do napake." };
   }
 }

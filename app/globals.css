@@ -21,6 +21,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+h1 {
+  @apply text-center text-2xl;
+}
+
 @layer utilities {
   .header {
     @apply shadow-xl p-3 bg-foreground fixed top-0 w-full z-10;

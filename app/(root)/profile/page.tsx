@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { requireUser } from "@/lib/requireUser";
 import ProfileForm from "../profile/ProfileForm";
+import { redirect } from "next/navigation";
 
 type ProfilePageData = {
   name?: string;
@@ -21,19 +22,14 @@ export default async function ProfilePage() {
   );
 
   if (!user) {
-    return (
-      <section className="authPage">
-        <section className="w-full max-w-2xl rounded-lg border border-[color:var(--border)] bg-white p-6 shadow-sm">
-          <p className="text-sm text-[color:var(--muted)]">Profile not found.</p>
-        </section>
-      </section>
-    );
+    redirect("/login");
   }
 
   return (
-    <section className="authPage">
-      <section className="w-full max-w-2xl rounded-lg border border-[color:var(--border)] bg-white p-6 shadow-sm">
-        <div className="mb-6 text-2xl font-semibold text-black">Profile</div>
+    <section className="main">
+      <h1>Profil</h1>
+      <p className="text-lg">Uredite svoje osebne podatke</p>
+      <section className="rounded-lg bg-secondary text-primary p-6 shadow-xl">
         <ProfileForm user={user} />
       </section>
     </section>

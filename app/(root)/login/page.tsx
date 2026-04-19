@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // Server action za prijavo
 import { loginAction } from "./action";
 //import { loginAction } from "./actions";
@@ -36,7 +36,7 @@ const Login = () => {
         }
 
         // Uspešna prijava
-        router.push("/dashboard");
+        router.push("/");
         router.refresh();
       }
       // Google login tukaj ne pride do konca
@@ -66,7 +66,7 @@ const Login = () => {
             }}
           >
             <div className="flex flex-col">
-              <label htmlFor="identifier">Uporabniško ime ali e-pošta</label>
+              <label htmlFor="identifier">Uporabniško ime ali e - pošta</label>
               <input
                 id="identifier"
                 name="identifier"
@@ -115,7 +115,7 @@ const Login = () => {
 
           <form action={(formData) => handleLogin("google", formData)}>
             <button
-              className="btn flex w-full items-center justify-center gap-2"
+              className="btn flex w-4/5 mx-auto items-center justify-center gap-2"
               type="submit"
             >
               <Image src="/google.png" alt="google" width={24} height={24} />

@@ -36,10 +36,10 @@ const RegisterPage = () => {
   return (
     <div className="auth-page">
       <section className="auth-section">
-        <div className="auth-heading">Register</div>
+        <div className="auth-heading">Registracija</div>
         <form className="auth-form space-y-3" onSubmit={handleSubmit}>
           <div className="flex flex-col">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Uporabniško ime</label>
             <input
               id="username"
               name="username"
@@ -49,7 +49,7 @@ const RegisterPage = () => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="email">E-mail</label>
+            <label htmlFor="email">E - pošta</label>
             <input
               id="email"
               name="email"
@@ -59,7 +59,7 @@ const RegisterPage = () => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Geslo</label>
             <input
               id="password"
               name="password"
@@ -69,7 +69,7 @@ const RegisterPage = () => {
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="repeatPassword">Repeat password</label>
+            <label htmlFor="repeatPassword">Ponovi geslo</label>
             <input
               id="repeatPassword"
               name="repeatPassword"
@@ -81,12 +81,12 @@ const RegisterPage = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button className="btn mt-3" type="submit">
-            Register
+            Registriraj se
           </button>
 
           <div className="text-center">
             <Link className="text-sm hover:underline" href="/login">
-              Already have an account? Login.
+              Že imate račun? Prijavite se.
             </Link>
           </div>
         </form>

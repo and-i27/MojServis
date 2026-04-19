@@ -17,8 +17,8 @@ export default function VehicleImageGallery({
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[16/9] w-full items-center justify-center bg-gray-50 text-sm text-[color:var(--muted)]">
-        No image uploaded
+      <div className="flex aspect-video w-full items-center justify-center bg-gray-50">
+        Ni objavljenih slik
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function VehicleImageGallery({
   return (
     <div className="flex flex-col gap-3 p-3 sm:p-4">
       <div className="relative overflow-hidden rounded-lg bg-gray-50">
-        <div className="relative aspect-[16/9] w-full">
+        <div className="relative aspect-video w-full">
           <Image
             src={activeImage}
             alt={`${title} image ${activeIndex + 1}`}
@@ -56,7 +56,7 @@ export default function VehicleImageGallery({
               type="button"
               aria-label="Previous image"
               onClick={showPrevious}
-              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white transition hover:bg-black/80"
+              className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-secondary/65 text-primary transition hover:bg-secondary/80 hover:scale-110 hover:cursor-pointer"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -64,11 +64,11 @@ export default function VehicleImageGallery({
               type="button"
               aria-label="Next image"
               onClick={showNext}
-              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/65 text-white transition hover:bg-black/80"
+              className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-secondary/65 text-primary transition hover:bg-secondary/80 hover:scale-110 hover:cursor-pointer"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
-            <div className="absolute bottom-3 right-3 rounded-full bg-black/65 px-3 py-1 text-xs font-medium text-white">
+            <div className="absolute bottom-3 right-3 rounded-full bg-secondary/65 px-3 py-1 text-xs font-medium text-primary">
               {activeIndex + 1} / {images.length}
             </div>
           </>
@@ -88,11 +88,11 @@ export default function VehicleImageGallery({
                 onClick={() => setActiveIndex(index)}
                 className={`relative overflow-hidden rounded-md border transition ${
                   isActive
-                    ? "border-black ring-1 ring-black"
-                    : "border-[color:var(--border)] hover:border-neutral-400"
+                    ? "border-primary/80 ring-1 ring-primary/80"
+                    : "hover:border-primary/65 hover:cursor-pointer"
                 }`}
               >
-                <div className="relative aspect-[4/3] w-full">
+                <div className="relative aspect-4/3 w-full">
                   <Image
                     src={image}
                     alt={`${title} thumbnail ${index + 1}`}

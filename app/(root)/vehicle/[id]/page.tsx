@@ -38,71 +38,70 @@ export default async function VehiclePage({
 
   if (!car) return notFound();
 
-  const title = car.name || car.makeModel || "Vehicle";
+  const title = car.name || car.makeModel || "Vozilo";
 
   return (
-    <section className="mainContent">
-      <div className="flex flex-col gap-3">
-        <p className="text-sm text-[color:var(--muted)]">Vehicle</p>
-        <h1 className="heading text-left">{title}</h1>
-        <p className="text-sm text-[color:var(--muted)]">
-          {car.notes || "Service history, inspections and documents in one place."}
+    <section className="main">
+        <h1>{title}</h1>
+        <p className="text-lg">Podrobnosti o vozilu</p>
+        <p>
+          {car.notes && <span className="font-semibold">Vaše opombe: </span>}
+          {car.notes || "Zgodovina servisov, pregledov in dokumentov na enem mestu."}
         </p>
-      </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="overflow-hidden rounded-lg border border-[color:var(--border)] bg-white shadow-sm">
+        <div className="overflow-hidden rounded-lg bg-secondary shadow-xl">
           <VehicleImageGallery title={title} images={car.imageUrls ?? []} />
         </div>
 
         <div className="grid gap-6">
-          <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
-            <div className="text-sm font-semibold">Overview</div>
-            <div className="mt-4 grid gap-3 text-sm text-[color:var(--muted)]">
+          <div className="rounded-lg text-primary bg-secondary p-5 shadow-xl">
+            <div className="font-semibold">Podrobnosti</div>
+            <div className="mt-4 grid gap-3 text-sm">
               <div className="flex items-center justify-between gap-4">
-                <span>Make / Model</span>
-                <span className="text-right text-black">{car.makeModel ?? "-"}</span>
+                <span>Znamka / Model</span>
+                <span className="text-right">{car.makeModel ?? "-"}</span>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span>Year</span>
-                <span className="text-right text-black">{car.year ?? "-"}</span>
+                <span>Letos proizvodnje</span>
+                <span className="text-right">{car.year ?? "-"}</span>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span>Plate</span>
-                <span className="text-right text-black">{car.plate ?? "-"}</span>
+                <span>Registrska oznaka</span>
+                <span className="text-right">{car.plate ?? "-"}</span>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span>VIN</span>
-                <span className="text-right text-black">{car.vin ?? "-"}</span>
+                <span className="text-right">{car.vin ?? "-"}</span>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <span>Odometer (km)</span>
-                <span className="text-right text-black">
+                <span>Prevoženih kilometrov</span>
+                <span className="text-right">
                   {car.odometer ? car.odometer.toLocaleString("en-US") : "-"}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
-            <div className="text-sm font-semibold">Actions</div>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link href={`/vehicle/${car._id}/services`} className="button w-auto">
-                Services
+          <div className="rounded-lg bg-secondary text-primary p-5 shadow-xl">
+            <div className="font-semibold">Dejanja</div>
+            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4 sm:-mt-2 h-full">
+              <Link href={`/vehicle/${car._id}/services`} className="btn text-center w-full sm:w-1/3">
+                Servisi
               </Link>
-              <Link href={`/vehicle/${car._id}/todo`} className="button w-auto">
-                To-do
+              <Link href={`/vehicle/${car._id}/todo`} className="btn text-center w-full sm:w-1/3">
+                Opravila
               </Link>
-              <Link href={`/vehicle/${car._id}/edit`} className="button w-auto">
-                Edit vehicle
+              <Link href={`/vehicle/${car._id}/edit`} className="btn text-center w-full sm:w-1/3">
+                Uredi vozilo
               </Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 text-sm text-[color:var(--muted)]">
-        Keep your invoices, inspection reports, and service history attached to this vehicle.
+      <div className="rounded-lg bg-secondary text-primary p-5">
+        Za to vozilo si shranite račune, poročila o pregledu in zgodovino servisiranja.
       </div>
     </section>
   );

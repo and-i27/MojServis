@@ -8,7 +8,7 @@ import { requireUser } from "@/lib/requireUser";
 type UpdateProfileResult = {
   success: boolean;
   error: string | null;
-  redirectTo?: string;
+  message?: string;
 };
 
 type ProfileUserRecord = {
@@ -28,11 +28,11 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
     const confirmNewPassword = String(formData.get("confirmNewPassword") || "");
 
     if (!name) {
-      return { success: false, error: "Name is required." };
+      return { success: false, error: "Ime je obvezno." };
     }
 
     if (!email) {
-      return { success: false, error: "Email is required." };
+      return { success: false, error: "E - pošta je obvezna." };
     }
 
     const existingUser = await writeClient.fetch(
@@ -41,7 +41,7 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
     );
 
     if (existingUser?._id) {
-      return { success: false, error: "Email is already in use." };
+      return { success: false, error: "Ta e - pošta je že v uporabi." };
     }
 
     const user: ProfileUserRecord | null = await writeClient.fetch(
@@ -50,7 +50,7 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
     );
 
     if (!user?._id) {
-      return { success: false, error: "Profile not found." };
+      return { success: false, error: "Profil ni najden." };
     }
 
     const wantsPasswordChange = Boolean(currentPassword || newPassword || confirmNewPassword);
@@ -60,32 +60,32 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
       if (user.provider === "google") {
         return {
           success: false,
-          error: "This account uses Google sign-in, so password changes are not available here.",
+          error: "Ta račun uporablja prijavo prek Googla, zato spreminjanje gesla ni na voljo tukaj.",
         };
       }
 
       if (!currentPassword || !newPassword || !confirmNewPassword) {
         return {
           success: false,
-          error: "To change password, fill in current password and both new password fields.",
+          error: "Za spreminjanje gesla izpolnite trenutno geslo in oba polja za novo geslo.",
         };
       }
 
       if (!user.passwordHash) {
-        return { success: false, error: "Password change is not available for this account." };
+        return { success: false, error: "Spreminjanje gesla ni na voljo za ta račun." };
       }
 
       const isValidCurrentPassword = await bcrypt.compare(currentPassword, user.passwordHash);
       if (!isValidCurrentPassword) {
-        return { success: false, error: "Current password is incorrect." };
+        return { success: false, error: "Trenutno geslo je napačno." };
       }
 
       if (newPassword.length < 6) {
-        return { success: false, error: "New password must be at least 6 characters long." };
+        return { success: false, error: "Novo geslo mora imeti vsaj 6 znakov." };
       }
 
       if (newPassword !== confirmNewPassword) {
-        return { success: false, error: "New passwords do not match." };
+        return { success: false, error: "Nova gesla se ne ujemata." };
       }
 
       patchData.passwordHash = await bcrypt.hash(newPassword, 10);
@@ -94,11 +94,11 @@ export async function updateProfile(formData: FormData): Promise<UpdateProfileRe
     await writeClient.patch(userId).set(patchData).commit();
 
     revalidatePath("/profile");
-    revalidatePath("/dashboard");
+    revalidatePath("/");
 
-    return { success: true, error: null, redirectTo: "/profile" };
+    return { success: true, error: "Profil uspešno posodobljen." };
   } catch (err) {
     console.error("UPDATE PROFILE ERROR:", err);
-    return { success: false, error: "Failed to update profile." };
+    return { success: false, error: "Pri posodabljanju profila je prišlo do napake." };
   }
 }
