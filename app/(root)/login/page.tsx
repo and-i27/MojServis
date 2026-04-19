@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // Server action za prijavo
 import { loginAction } from "./action";
 //import { loginAction } from "./actions";
@@ -36,7 +36,7 @@ const Login = () => {
         }
 
         // Uspešna prijava
-        router.push("/dashboard");
+        router.push("/");
         router.refresh();
       }
       // Google login tukaj ne pride do konca

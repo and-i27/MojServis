@@ -17,10 +17,10 @@ const Navbar = async () => {
            {session ? (
             <>
             <Link href="/vehicle/create">
-              <button className="btn min-w-30">Add vehicle</button>
+              <button className="btn min-w-30">Dodaj vozilo</button>
             </Link>
             <Link href="/todo">
-              <button className="btn min-w-30">To-do</button>
+              <button className="btn min-w-30">Opravila</button>
             </Link>
             <Link href="/profile">
               <button className="btn min-w-30">Moj Profil</button>

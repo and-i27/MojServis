@@ -44,7 +44,7 @@ export async function loginAction(type: string, formData: FormData): Promise<Log
       return {
         // Napačni podatki ali druga napaka
         success: false,
-        error: "Invalid username or password.",
+        error: "Napačno uporabniško ime ali geslo.",
       };
     }
   } else {
