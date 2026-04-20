@@ -56,7 +56,7 @@ export default async function TodoPage() {
   return (
     <section className="main">
       <h1>Vsa opravila</h1>
-      <p className="text-lg">Vsa opomniki in čakajoča dela za vaša vozila.</p>
+      <p className="text-lg">Vsi opomniki in čakajoča dela za vaša vozila.</p>
 
       <div className="section-primary p-5!">
         {todos.length === 0 ? (
