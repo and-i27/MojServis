@@ -28,6 +28,11 @@ export default defineType({
       initialValue: "user",
     }),
     defineField({
+      name: "provider",
+      type: "string",
+      hidden: true,
+    }),
+    defineField({
       name: "passwordHash",
       type: "string",
       hidden: true,
@@ -35,7 +40,7 @@ export default defineType({
   ],
   preview: {
     select: {
-        title: "name",
+      title: "name",
     },
   },
 });
