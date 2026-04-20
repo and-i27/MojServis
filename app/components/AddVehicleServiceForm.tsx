@@ -75,12 +75,12 @@ export default function AddVehicleServiceForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="odometer">Odometer (km)</label>
+          <label htmlFor="odometer">Prevoženi km</label>
           <input
             id="odometer"
             name="odometer"
             type="number"
-            className="authInput"
+            className="text-input"
             defaultValue={currentOdometer ?? undefined}
           />
         </div>

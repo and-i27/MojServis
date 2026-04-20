@@ -99,7 +99,7 @@ export default async function Home() {
               <Link
                 key={vehicle._id}
                 href={`/vehicle/${vehicle._id}`}
-                className="section-primary p-4! shadow! transition hover:shadow-xl"
+                className="section-primary p-4! shadow! transition-all hover:shadow-xl hover:scale-105"
               >
                 <div
                   className="mb-4 h-32 w-full rounded-md bg-cover bg-center"

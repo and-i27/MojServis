@@ -84,13 +84,20 @@ export default function AddVehicleTodoForm({ carId }: AddVehicleTodoFormProps) {
             checked={reminderEnabled}
             onChange={(e) => setReminderEnabled(e.target.checked)}
           />
-          <label htmlFor="reminderEnabled">Enable e-mail reminder</label>
+          <label htmlFor="reminderEnabled">
+            Omogoči opomnik preko e - pošte
+          </label>
         </div>
 
         {reminderEnabled && (
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <label htmlFor="reminderOffset">Reminder timing</label>
-            <select id="reminderOffset" name="reminderOffset" className="authInput" defaultValue="1week">
+            <label htmlFor="reminderOffset">Čas opomnika</label>
+            <select
+              id="reminderOffset"
+              name="reminderOffset"
+              className="text-input h-8"
+              defaultValue="1week"
+            >
               {Object.entries(reminderOffsetLabel).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}

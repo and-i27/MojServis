@@ -39,7 +39,7 @@ export default async function TodoDetailPage({
       "carName": car->name,
       "carId": car->_id
     }`,
-    { id, userId }
+    { id, userId },
   );
 
   if (!todo) {
@@ -47,25 +47,42 @@ export default async function TodoDetailPage({
   }
 
   return (
-    <section className="authPage">
-      <section className="w-full max-w-3xl rounded-lg border border-[color:var(--border)] bg-white p-6 shadow-sm">
-        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div className="text-2xl font-semibold text-black">To-do detail</div>
-            {todo.carId && (
-              <Link href={`/vehicle/${todo.carId}/todo`} className="mt-2 inline-block text-sm text-[color:var(--muted)] hover:text-black">
-                Back to {todo.carName ?? "vehicle"} tasks
-              </Link>
-            )}
-            <div className="mt-2 text-sm text-[color:var(--muted)]">
-              Reminder: {todo.reminderEnabled ? reminderOffsetLabel[todo.reminderOffset ?? "1week"] ?? todo.reminderOffset : "Disabled"}
-            </div>
-          </div>
-          <Link href="/todo" className="button w-auto">
-            All to-dos
+    <section className="main">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="w-full sm:w-1/2 text-center space-y-2">
+          <h1>Podrobnosti opravila</h1>
+
+          <Link
+            href={`/vehicle/${todo.carId}/todo`}
+            className="inline-block hover:text-secondary/80"
+          >
+            Nazaj na opravila vozila {todo.carName ?? "vehicle"}
           </Link>
+          <div>
+            Opomnik:{" "}
+            {todo.reminderEnabled
+              ? (reminderOffsetLabel[todo.reminderOffset ?? "1week"] ??
+                todo.reminderOffset)
+              : "Ne aktiven"}
+          </div>
         </div>
 
+        <div className="flex flex-wrap items-center text-center gap-4 w-full sm:w-auto sm:h-full">
+          <Link href="/todo" className="btn w-full sm:w-auto">
+            Vsa opravila
+          </Link>
+          <Link
+            href={`/vehicle/${todo.carId}`}
+            className="btn w-full sm:w-auto"
+          >
+            Nazaj na vozilo
+          </Link>
+        </div>
+      </div>
+
+      <div className="border-b"></div>
+
+      <section className="section-primary">
         <TodoDetailForm todo={todo} />
       </section>
     </section>

@@ -34,7 +34,9 @@ function toStringValue(value: unknown) {
 }
 
 function pickValue(raw: Record<string, unknown>, aliases: string[]) {
-  const normalizedEntries = Object.entries(raw).map(([key, value]) => [normalizeHeader(key), value] as const);
+  const normalizedEntries = Object.entries(raw).map(
+    ([key, value]) => [normalizeHeader(key), value] as const,
+  );
 
   for (const alias of aliases) {
     const match = normalizedEntries.find(([key]) => key === alias);
@@ -83,7 +85,9 @@ function normalizeDate(value: string) {
     return directDate.toISOString();
   }
 
-  const slDateMatch = value.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2}))?$/);
+  const slDateMatch = value.match(
+    /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2}))?$/,
+  );
   if (slDateMatch) {
     const [, day, month, year, hour = "0", minute = "0"] = slDateMatch;
     const localDate = new Date(
@@ -91,7 +95,7 @@ function normalizeDate(value: string) {
       Number(month) - 1,
       Number(day),
       Number(hour),
-      Number(minute)
+      Number(minute),
     );
 
     if (!Number.isNaN(localDate.getTime())) {
@@ -106,37 +110,63 @@ function normalizeDecimal(value: string) {
   return value.replace(/\s/g, "").replace(",", ".");
 }
 
-export function normalizeImportedServiceRow(raw: Record<string, unknown>, rowNumber: number): ImportedServiceRow {
-  const plate = toStringValue(pickValue(raw, ["plate", "licenseplate", "registration", "registrska", "registrskaoznaka"]));
+export function normalizeImportedServiceRow(
+  raw: Record<string, unknown>,
+  rowNumber: number,
+): ImportedServiceRow {
+  const plate = toStringValue(
+    pickValue(raw, [
+      "plate",
+      "licenseplate",
+      "registration",
+      "registrska",
+      "registrskaoznaka",
+    ]),
+  );
   const vin = toStringValue(pickValue(raw, ["vin", "chassis", "sasija"]));
-  const title = toStringValue(pickValue(raw, ["title", "service", "servicetitle", "name", "naziv"]));
-  const serviceType = normalizeServiceType(toStringValue(pickValue(raw, ["servicetype", "type", "vrstaservisa", "vrsta"])));
-  const date = normalizeDate(toStringValue(pickValue(raw, ["date", "servicedate", "datum"])));
-  const odometer = normalizeDecimal(toStringValue(pickValue(raw, ["odometer", "kilometers", "km"])));
-  const cost = normalizeDecimal(toStringValue(pickValue(raw, ["cost", "price", "amount", "strosek"])));
-  const currency = toStringValue(pickValue(raw, ["currency", "valuta"])) || "EUR";
-  const description = toStringValue(pickValue(raw, ["description", "notes", "opis", "opombe"]));
+  const title = toStringValue(
+    pickValue(raw, ["title", "service", "servicetitle", "name", "naziv"]),
+  );
+  const serviceType = normalizeServiceType(
+    toStringValue(
+      pickValue(raw, ["servicetype", "type", "vrstaservisa", "vrsta"]),
+    ),
+  );
+  const date = normalizeDate(
+    toStringValue(pickValue(raw, ["date", "servicedate", "datum"])),
+  );
+  const odometer = normalizeDecimal(
+    toStringValue(pickValue(raw, ["odometer", "kilometers", "km"])),
+  );
+  const cost = normalizeDecimal(
+    toStringValue(pickValue(raw, ["cost", "price", "amount", "strosek"])),
+  );
+  const currency =
+    toStringValue(pickValue(raw, ["currency", "valuta"])) || "EUR";
+  const description = toStringValue(
+    pickValue(raw, ["description", "notes", "opis", "opombe"]),
+  );
 
   const errors: string[] = [];
 
   if (!plate && !vin) {
-    errors.push("Missing plate or VIN.");
+    errors.push("Manjkajoča registrska oznaka ali VIN.");
   }
 
   if (!title) {
-    errors.push("Missing service title.");
+    errors.push("Manjkajoč naslov servisa.");
   }
 
   if (!date) {
-    errors.push("Missing or invalid service date.");
+    errors.push("Manjkajoč ali neveljaven datum servisa.");
   }
 
   if (odometer && Number.isNaN(Number(odometer))) {
-    errors.push("Invalid odometer value.");
+    errors.push("Neveljavna vrednost prevoženih kilometrov.");
   }
 
   if (cost && Number.isNaN(Number(cost))) {
-    errors.push("Invalid cost value.");
+    errors.push("Neveljavna vrednost stroškov.");
   }
 
   return {
@@ -155,5 +185,15 @@ export function normalizeImportedServiceRow(raw: Record<string, unknown>, rowNum
 }
 
 export function getServiceImportTemplateHeaders() {
-  return ["plate", "vin", "title", "serviceType", "date", "odometer", "cost", "currency", "description"];
+  return [
+    "plate",
+    "vin",
+    "title",
+    "serviceType",
+    "date",
+    "odometer",
+    "cost",
+    "currency",
+    "description",
+  ];
 }

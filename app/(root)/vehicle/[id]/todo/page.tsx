@@ -20,15 +20,15 @@ type VehicleTodoPageData = {
 };
 
 const statusLabel: Record<string, string> = {
-  open: "Status: open",
-  done: "Status: done",
-  cancelled: "Status: cancelled",
+  open: "Stanje: odprto",
+  done: "Stanje: končano",
+  cancelled: "Stanje: preklicano",
 };
 
 const priorityLabel: Record<string, string> = {
-  low: "low priority",
-  medium: "medium priority",
-  high: "high priority",
+  low: "Nizka prioriteta",
+  medium: "Srednja prioriteta",
+  high: "Visoka prioriteta",
 };
 
 const statusClassName: Record<string, string> = {
@@ -124,7 +124,7 @@ export default async function VehicleTodoPage({
                   <div className="border-b"></div>
 
                   <div className="text-sm">
-                    Due {new Date(todo.dueDate).toLocaleString("sl-SI")}
+                    Rok {new Date(todo.dueDate).toLocaleDateString("sl-SI")}
                   </div>
                   {todo.reminderEnabled && (
                     <div className="mt-1 text-sm text-[color:var(--muted)]">

@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { completeTodo, deleteTodo, updateTodo } from "@/app/(root)/todo/[id]/action";
+import {
+  completeTodo,
+  deleteTodo,
+  updateTodo,
+} from "@/app/(root)/todo/[id]/action";
 import { reminderOffsetLabel } from "@/lib/todoReminder";
 
 type TodoDetailFormProps = {
@@ -22,7 +26,9 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [reminderEnabled, setReminderEnabled] = useState(Boolean(todo.reminderEnabled));
+  const [reminderEnabled, setReminderEnabled] = useState(
+    Boolean(todo.reminderEnabled),
+  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,7 +79,9 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
   async function handleDelete() {
     if (saving || completing || deleting) return;
 
-    const confirmed = window.confirm("Are you sure you want to delete this to-do?");
+    const confirmed = window.confirm(
+      "Ali ste prepričani, da želite izbrisati to opravilo?",
+    );
     if (!confirmed) return;
 
     setDeleting(true);
@@ -99,37 +107,54 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
     <form className="grid gap-4" onSubmit={handleSubmit}>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="title">Task title</label>
-          <input id="title" name="title" type="text" className="authInput" defaultValue={todo.title} required />
+          <label htmlFor="title">Ime opravila</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            className="text-input"
+            defaultValue={todo.title}
+            required
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="dueDate">Due date</label>
+          <label htmlFor="dueDate">Datum roka</label>
           <input
             id="dueDate"
             name="dueDate"
-            type="datetime-local"
-            className="authInput"
+            type="date"
+            className="text-input"
             defaultValue={todo.dueDate.slice(0, 16)}
             required
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="priority">Priority</label>
-          <select id="priority" name="priority" className="authInput" defaultValue={todo.priority}>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+          <label htmlFor="priority">Prioriteta</label>
+          <select
+            id="priority"
+            name="priority"
+            className="text-input h-8"
+            defaultValue={todo.priority}
+          >
+            <option value="low">Nizka</option>
+            <option value="medium">Srednja</option>
+            <option value="high">Visoka</option>
           </select>
         </div>
 
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="status">Status</label>
-          <select id="status" name="status" className="authInput" defaultValue={todo.status}>
-            <option value="open">Open</option>
-            <option value="done">Done</option>
-            <option value="cancelled">Cancelled</option>
+          <label htmlFor="status">Stanje</label>
+          <select
+            id="status"
+            name="status"
+            className="text-input h-8"
+            defaultValue={todo.status}
+          >
+            <option value="open">Odprto</option>
+            <option value="done">Končano</option>
+            <option value="cancelled">Preklicano</option>
           </select>
         </div>
 
@@ -141,16 +166,16 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
             checked={reminderEnabled}
             onChange={(e) => setReminderEnabled(e.target.checked)}
           />
-          <label htmlFor="reminderEnabled">Enable e-mail reminder</label>
+          <label htmlFor="reminderEnabled">Omogoči opomnik preko e-pošte</label>
         </div>
 
         {reminderEnabled && (
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <label htmlFor="reminderOffset">Reminder timing</label>
+            <label htmlFor="reminderOffset">Čas opomnika</label>
             <select
               id="reminderOffset"
               name="reminderOffset"
-              className="authInput"
+              className="text-input"
               defaultValue={todo.reminderOffset ?? "1week"}
             >
               {Object.entries(reminderOffsetLabel).map(([value, label]) => (
@@ -163,12 +188,12 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
         )}
 
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">Opis</label>
           <textarea
             id="description"
             name="description"
             rows={4}
-            className="authInput"
+            className="text-input"
             defaultValue={todo.description ?? ""}
           />
         </div>
@@ -177,24 +202,28 @@ export default function TodoDetailForm({ todo }: TodoDetailFormProps) {
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <button className="buttonPrimary w-auto px-6" disabled={saving || completing || deleting} type="submit">
-          {saving ? "Saving..." : "Save changes"}
+        <button
+          className="btn w-auto disabled:opacity-60"
+          disabled={saving || completing || deleting}
+          type="submit"
+        >
+          {saving ? "Shranjevanje..." : "Shrani spremembe"}
         </button>
         <button
-          className="button w-auto"
+          className="btn w-auto disabled:opacity-60"
           disabled={saving || completing || deleting || todo.status === "done"}
           type="button"
           onClick={handleComplete}
         >
-          {completing ? "Completing..." : "Mark as done"}
+          {completing ? "Označevanje..." : "Označi kot končano"}
         </button>
         <button
-          className="rounded-md border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+          className="btn border border-red-600 bg-red-300! text-red-600! disabled:opacity-60"
           disabled={saving || completing || deleting}
           type="button"
           onClick={handleDelete}
         >
-          {deleting ? "Deleting..." : "Delete to-do"}
+          {deleting ? "Brisanje..." : "Izbriši opravilo"}
         </button>
       </div>
     </form>
