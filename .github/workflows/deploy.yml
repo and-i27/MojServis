@@ -54,3 +54,9 @@ jobs:
             pm2 save
 
             echo "✅ Deployment completed successfully!"
+
+            echo "⏰ Setting up cron job..."
+
+            (crontab -l 2>/dev/null | grep -v "reminders/send"; echo "0 8 * * * curl -s -X GET http://localhost:3003/api/reminders/send -H \"Authorization: Bearer 15232598604e985f123b595113b5c2c6275faa20d4dd802f647a8b2ba6966dd0\" >> /var/log/reminder-cron.log 2>&1") | crontab -
+
+            echo "✅ Cron job installed!"
