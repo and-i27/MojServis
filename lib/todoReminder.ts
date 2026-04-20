@@ -1,8 +1,8 @@
 export const reminderOffsetLabel: Record<string, string> = {
-  "1day": "1 day early",
-  "3days": "3 days early",
-  "1week": "1 week early",
-  "2weeks": "2 weeks early",
+  "1day": "1 dan prej",
+  "3days": "3 dni prej",
+  "1week": "1 teden prej",
+  "2weeks": "2 tedna prej",
 };
 
 export function getReminderOffsetMs(reminderOffset: string) {

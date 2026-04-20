@@ -20,22 +20,25 @@ export default async function ServiceImportPage() {
       plate,
       vin
     }`,
-    { userId }
+    { userId },
   );
 
   return (
     <section className="main">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between text-center gap-4">
         <div>
-          <h1 className="heading text-left">Uvozi Servise</h1>
-          <p className="text-sm text-[color:var(--muted)]">
-            Uvoz zgodovine servisiranja v bazo podatkov iz CSV ali Excel datotek.
+          <h1>Uvozi Servise</h1>
+          <p className="text-lg">
+            Uvoz zgodovine servisiranja v bazo podatkov iz CSV ali Excel
+            datotek.
           </p>
         </div>
-        <Link href="/" className="button w-auto">
-          <button className="btn min-w-30">Domov</button>
+        <Link href="/" className="btn w-full sm:w-30">
+          Domov
         </Link>
       </div>
+
+      <div className="border-b"></div>
 
       <ServiceImportForm knownCars={cars} />
     </section>

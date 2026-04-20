@@ -41,21 +41,38 @@ export default function AddVehicleTodoForm({ carId }: AddVehicleTodoFormProps) {
     <form className="grid gap-4" onSubmit={handleSubmit}>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="title">Task title</label>
-          <input id="title" name="title" type="text" className="authInput" required />
+          <label htmlFor="title">Ime opravila</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            className="text-input"
+            required
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="dueDate">Due date</label>
-          <input id="dueDate" name="dueDate" type="datetime-local" className="authInput" required />
+          <label htmlFor="dueDate">Datum roka</label>
+          <input
+            id="dueDate"
+            name="dueDate"
+            type="date"
+            className="text-input"
+            required
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="priority">Priority</label>
-          <select id="priority" name="priority" className="authInput" defaultValue="medium">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+          <label htmlFor="priority">Prioriteta</label>
+          <select
+            id="priority"
+            name="priority"
+            className="text-input h-8"
+            defaultValue="medium"
+          >
+            <option value="low">Nizka</option>
+            <option value="medium">Srednja</option>
+            <option value="high">Visoka</option>
           </select>
         </div>
 
@@ -67,13 +84,20 @@ export default function AddVehicleTodoForm({ carId }: AddVehicleTodoFormProps) {
             checked={reminderEnabled}
             onChange={(e) => setReminderEnabled(e.target.checked)}
           />
-          <label htmlFor="reminderEnabled">Enable e-mail reminder</label>
+          <label htmlFor="reminderEnabled">
+            Omogoči opomnik preko e - pošte
+          </label>
         </div>
 
         {reminderEnabled && (
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <label htmlFor="reminderOffset">Reminder timing</label>
-            <select id="reminderOffset" name="reminderOffset" className="authInput" defaultValue="1week">
+            <label htmlFor="reminderOffset">Čas opomnika</label>
+            <select
+              id="reminderOffset"
+              name="reminderOffset"
+              className="text-input h-8"
+              defaultValue="1week"
+            >
               {Object.entries(reminderOffsetLabel).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
@@ -84,8 +108,13 @@ export default function AddVehicleTodoForm({ carId }: AddVehicleTodoFormProps) {
         )}
 
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="description">Description</label>
-          <textarea id="description" name="description" rows={3} className="authInput" />
+          <label htmlFor="description">Opis</label>
+          <textarea
+            id="description"
+            name="description"
+            rows={3}
+            className="text-input"
+          />
         </div>
 
         <input type="hidden" name="status" value="open" />
@@ -94,8 +123,8 @@ export default function AddVehicleTodoForm({ carId }: AddVehicleTodoFormProps) {
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="flex flex-wrap gap-3">
-        <button className="buttonPrimary w-auto px-6" disabled={saving} type="submit">
-          {saving ? "Saving..." : "Add to-do"}
+        <button className="btn w-auto px-6" disabled={saving} type="submit">
+          {saving ? "Shranjujem..." : "Dodaj opravilo"}
         </button>
       </div>
     </form>

@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { writeClient } from '@/sanity/lib/WriteClient';
+import { writeClient } from "@/sanity/lib/WriteClient";
 import { requireUser } from "@/lib/requireUser";
 
 type ServiceActionResult = {
@@ -12,18 +12,18 @@ type ServiceActionResult = {
 
 export async function createVehicleService(
   carId: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<ServiceActionResult> {
   try {
     const { userId } = await requireUser();
 
     const car = await writeClient.fetch(
       `*[_type == "car" && _id == $carId && owner._ref == $userId][0]{ _id }`,
-      { carId, userId }
+      { carId, userId },
     );
 
     if (!car?._id) {
-      return { success: false, error: "Vehicle not found." };
+      return { success: false, error: "Vozilo ni najdeno." };
     }
 
     const title = String(formData.get("title") || "").trim();
@@ -34,11 +34,11 @@ export async function createVehicleService(
     const currency = String(formData.get("currency") || "EUR").trim() || "EUR";
 
     if (!title) {
-      return { success: false, error: "Title is required." };
+      return { success: false, error: "Ime servisa je obvezno." };
     }
 
     if (!date) {
-      return { success: false, error: "Date is required." };
+      return { success: false, error: "Datum je obvezen." };
     }
 
     const odometer = odometerRaw ? Number(odometerRaw) : undefined;
@@ -60,9 +60,13 @@ export async function createVehicleService(
     revalidatePath(`/vehicle/${carId}`);
     revalidatePath(`/vehicle/${carId}/services`);
 
-    return { success: true, error: null, redirectTo: `/vehicle/${carId}/services` };
+    return {
+      success: true,
+      error: null,
+      redirectTo: `/vehicle/${carId}/services`,
+    };
   } catch (err) {
     console.error("CREATE SERVICE ERROR:", err);
-    return { success: false, error: "Failed to create service record." };
+    return { success: false, error: "Pri dodajanju servisa prišlo do napake." };
   }
 }

@@ -8,7 +8,10 @@ type AddVehicleServiceFormProps = {
   currentOdometer?: number;
 };
 
-export default function AddVehicleServiceForm({ carId, currentOdometer }: AddVehicleServiceFormProps) {
+export default function AddVehicleServiceForm({
+  carId,
+  currentOdometer,
+}: AddVehicleServiceFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -40,47 +43,76 @@ export default function AddVehicleServiceForm({ carId, currentOdometer }: AddVeh
     <form className="grid gap-4" onSubmit={handleSubmit}>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="title">Service title</label>
-          <input id="title" name="title" type="text" className="authInput" required />
+          <label htmlFor="title">Ime servisa</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            className="text-input"
+            required
+          />
         </div>
 
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label htmlFor="description">Description</label>
-          <textarea id="description" name="description" rows={3} className="authInput" />
+          <label htmlFor="description">Opis</label>
+          <textarea
+            id="description"
+            name="description"
+            rows={3}
+            className="text-input"
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="date">Date</label>
-          <input id="date" name="date" type="datetime-local" className="authInput" required />
+          <label htmlFor="date">Datum</label>
+          <input
+            id="date"
+            name="date"
+            type="date"
+            className="text-input"
+            required
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="odometer">Odometer (km)</label>
+          <label htmlFor="odometer">Prevoženi km</label>
           <input
             id="odometer"
             name="odometer"
             type="number"
-            className="authInput"
+            className="text-input"
             defaultValue={currentOdometer ?? undefined}
           />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="cost">Cost</label>
-          <input id="cost" name="cost" type="number" step="0.01" className="authInput" />
+          <label htmlFor="cost">Stroški</label>
+          <input
+            id="cost"
+            name="cost"
+            type="number"
+            step="0.01"
+            className="text-input"
+          />
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="currency">Currency</label>
-          <input id="currency" name="currency" type="text" className="authInput" defaultValue="EUR" />
+          <label htmlFor="currency">Valuta</label>
+          <input
+            id="currency"
+            name="currency"
+            type="text"
+            className="text-input"
+            defaultValue="EUR"
+          />
         </div>
       </div>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       <div className="flex flex-wrap gap-3">
-        <button className="buttonPrimary w-auto px-6" disabled={saving} type="submit">
-          {saving ? "Saving..." : "Add service"}
+        <button className="btn w-auto px-6" disabled={saving} type="submit">
+          {saving ? "Shranjujem..." : "Dodaj servis"}
         </button>
       </div>
     </form>

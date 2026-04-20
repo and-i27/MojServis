@@ -62,6 +62,10 @@ h1 {
     @apply flex flex-col space-y-2 mx-auto w-3/5;
   }
 
+  .section-primary {
+    @apply bg-secondary text-primary rounded-lg p-6 shadow-xl;
+  }
+
   .text-input {
     @apply bg-background text-secondary rounded-md p-1;
   }

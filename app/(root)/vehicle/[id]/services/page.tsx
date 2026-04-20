@@ -44,15 +44,13 @@ export default async function VehicleServicesPage({
         currency
       }
     }`,
-    { id, userId }
+    { id, userId },
   );
 
   if (!vehicle) {
     return (
       <section className="main">
-        <div className="rounded-lg border border-[color:var(--border)] bg-white p-6 text-sm text-[color:var(--muted)]">
-          Vehicle not found.
-        </div>
+        <div className="section-primary">Vozilo ni bilo najdeno.</div>
       </section>
     );
   }
@@ -60,17 +58,20 @@ export default async function VehicleServicesPage({
   return (
     <section className="main">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="heading text-left">Vehicle Services</h1>
-          <p className="text-sm text-[color:var(--muted)]">
-            Track service history and costs for {vehicle.name}.
+        <div className="sm:w-1/2 text-center">
+          <h1>Servisi vozila</h1>
+          <p className="text-lg">
+            Spremljajte zgodovino servisov in stroške za {vehicle.name}.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/import/services" className="button w-auto">
             <button className="btn min-w-30">Uvozi servis</button>
           </Link>
-          <Link href={`/api/vehicle/${id}/services/pdf`} className="button w-auto">
+          <Link
+            href={`/api/vehicle/${id}/services/pdf`}
+            className="button w-auto"
+          >
             <button className="btn min-w-30">Izvozi PDF</button>
           </Link>
           <Link href={`/vehicle/${id}`} className="button w-auto">
@@ -79,45 +80,51 @@ export default async function VehicleServicesPage({
         </div>
       </div>
 
+      <div className="border-b"></div>
+
       <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
-          <div className="mb-4 text-sm font-semibold">Add service</div>
-          <AddVehicleServiceForm carId={id} currentOdometer={vehicle.odometer} />
+        <div className="section-primary p-5!">
+          <div className="mb-4 font-semibold">Dodaj servis</div>
+          <AddVehicleServiceForm carId={id} />
         </div>
 
-        <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
-          <div className="mb-4 text-sm font-semibold">Service history</div>
+        <div className="section-primary p-5!">
+          <div className="mb-4 font-semibold">Zgodovina servisov</div>
           {vehicle.services.length === 0 ? (
-            <p className="text-sm text-[color:var(--muted)]">
-              No service records yet for this vehicle.
-            </p>
+            <p className="text-sm">Za to vozilo še ni servisnih zapisov.</p>
           ) : (
             <div className="grid gap-3">
               {vehicle.services.map((service) => (
-                <div key={service._id} className="rounded-lg border border-[color:var(--border)] p-4">
+                <div
+                  key={service._id}
+                  className="rounded-lg bg-background text-secondary p-4 space-y-2"
+                >
                   <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <div className="font-medium text-black">{service.title}</div>
-                      {service.serviceType && (
-                        <div className="mt-1 text-sm text-[color:var(--muted)]">
-                          {serviceTypeLabel[service.serviceType] ?? service.serviceType}
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-sm text-[color:var(--muted)]">
-                      {new Date(service.date).toLocaleString("sl-SI")}
+                    <div className="font-medium">{service.title}</div>
+                    <div className="text-sm">
+                      {new Date(service.date).toLocaleDateString("sl-SI")}
                     </div>
                   </div>
-                  <div className="mt-2 flex flex-wrap gap-4 text-sm text-[color:var(--muted)]">
+
+                  <div className="border-b"></div>
+
+                  <div className="flex flex-wrap gap-4 text-sm">
                     <span>
-                      Odometer: {typeof service.odometer === "number" ? service.odometer.toLocaleString("sl-SI") : "-"} km
+                      Prevoženi km:{" "}
+                      {service.odometer
+                        ? service.odometer.toLocaleString("sl-SI")
+                        : "-"}{" "}
+                      km
                     </span>
                     <span>
-                      Cost: {typeof service.cost === "number" ? `${service.cost.toFixed(2)} ${service.currency ?? "EUR"}` : "-"}
+                      Stroški:{" "}
+                      {typeof service.cost === "number"
+                        ? `${service.cost.toFixed(2)} ${service.currency ?? "EUR"}`
+                        : "-"}
                     </span>
                   </div>
                   {service.description && (
-                    <p className="mt-2 text-sm text-[color:var(--muted)]">{service.description}</p>
+                    <p className="text-sm">{service.description}</p>
                   )}
                 </div>
               ))}

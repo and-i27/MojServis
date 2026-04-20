@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import { writeClient } from '@/sanity/lib/WriteClient';
+import { writeClient } from "@/sanity/lib/WriteClient";
 
 type VehicleMutationResult = {
   success: boolean;
@@ -30,35 +30,38 @@ async function getCurrentUserId() {
 
   const user = await writeClient.fetch(
     `*[_type == "user" && email == $email][0]{ _id }`,
-    { email }
+    { email },
   );
 
   return user?._id ?? null;
 }
 
-async function getOwnedCar(id: string, ownerId: string): Promise<CarRecord | null> {
+async function getOwnedCar(
+  id: string,
+  ownerId: string,
+): Promise<CarRecord | null> {
   return writeClient.fetch(
     `*[_type == "car" && _id == $id && owner._ref == $ownerId][0]{
       _id,
       images
     }`,
-    { id, ownerId }
+    { id, ownerId },
   );
 }
 
 export async function updateVehicle(
   id: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<VehicleMutationResult> {
   try {
     const ownerId = await getCurrentUserId();
     if (!ownerId) {
-      return { success: false, error: "You must be logged in." };
+      return { success: false, error: "Za urejanje vozila se prijavite." };
     }
 
     const car = await getOwnedCar(id, ownerId);
     if (!car?._id) {
-      return { success: false, error: "Vehicle not found." };
+      return { success: false, error: "Vozilo ni najdeno." };
     }
 
     const name = String(formData.get("name") || "").trim();
@@ -70,7 +73,7 @@ export async function updateVehicle(
     const notes = String(formData.get("notes") || "").trim();
 
     if (!name) {
-      return { success: false, error: "Name is required." };
+      return { success: false, error: "Ime je obvezno." };
     }
 
     const year = yearRaw ? Number(yearRaw) : undefined;
@@ -91,7 +94,10 @@ export async function updateVehicle(
       }
     }
 
-    const images = newImageRefs.length > 0 ? [...(car.images ?? []), ...newImageRefs] : car.images;
+    const images =
+      newImageRefs.length > 0
+        ? [...(car.images ?? []), ...newImageRefs]
+        : car.images;
 
     await writeClient
       .patch(id)
@@ -108,33 +114,37 @@ export async function updateVehicle(
       .unset(["make", "model"])
       .commit();
 
-    revalidatePath("/dashboard");
     revalidatePath(`/vehicle/${id}`);
     revalidatePath(`/vehicle/${id}/edit`);
 
     return { success: true, error: null, redirectTo: `/vehicle/${id}` };
   } catch (err) {
     console.error("UPDATE VEHICLE ERROR:", err);
-    return { success: false, error: "Failed to update vehicle." };
+    return {
+      success: false,
+      error: "Pri posodabljanju vozila je prišlo do napake.",
+    };
   }
 }
 
 export async function removeVehicleImage(
   id: string,
-  assetRef: string
+  assetRef: string,
 ): Promise<VehicleMutationResult> {
   try {
     const ownerId = await getCurrentUserId();
     if (!ownerId) {
-      return { success: false, error: "You must be logged in." };
+      return { success: false, error: "Za odstranjevanje slike se prijavite." };
     }
 
     const car = await getOwnedCar(id, ownerId);
     if (!car?._id) {
-      return { success: false, error: "Vehicle not found." };
+      return { success: false, error: "Vozilo ni najdeno." };
     }
 
-    const nextImages = (car.images ?? []).filter((image) => image.asset._ref !== assetRef);
+    const nextImages = (car.images ?? []).filter(
+      (image) => image.asset._ref !== assetRef,
+    );
 
     await writeClient
       .patch(id)
@@ -143,38 +153,44 @@ export async function removeVehicleImage(
       })
       .commit();
 
-    revalidatePath("/dashboard");
     revalidatePath(`/vehicle/${id}`);
     revalidatePath(`/vehicle/${id}/edit`);
 
     return { success: true, error: null };
   } catch (err) {
     console.error("REMOVE VEHICLE IMAGE ERROR:", err);
-    return { success: false, error: "Failed to remove image." };
+    return {
+      success: false,
+      error: "Pri odstranjevanju slike je prišlo do napake.",
+    };
   }
 }
 
-export async function deleteVehicle(id: string): Promise<VehicleMutationResult> {
+export async function deleteVehicle(
+  id: string,
+): Promise<VehicleMutationResult> {
   try {
     const ownerId = await getCurrentUserId();
     if (!ownerId) {
-      return { success: false, error: "You must be logged in." };
+      return { success: false, error: "Za brisanje vozila se prijavite." };
     }
 
     const car = await getOwnedCar(id, ownerId);
     if (!car?._id) {
-      return { success: false, error: "Vehicle not found." };
+      return { success: false, error: "Vozilo ni najdeno." };
     }
 
     await writeClient.delete(id);
 
-    revalidatePath("/dashboard");
     revalidatePath(`/vehicle/${id}`);
     revalidatePath(`/vehicle/${id}/edit`);
 
     return { success: true, error: null, redirectTo: "/dashboard" };
   } catch (err) {
     console.error("DELETE VEHICLE ERROR:", err);
-    return { success: false, error: "Failed to delete vehicle." };
+    return {
+      success: false,
+      error: "Pri brisanju vozila je prišlo do napake.",
+    };
   }
 }

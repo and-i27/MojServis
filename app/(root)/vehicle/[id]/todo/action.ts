@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { writeClient } from '@/sanity/lib/WriteClient';
+import { writeClient } from "@/sanity/lib/WriteClient";
 import { requireUser } from "@/lib/requireUser";
 
 type TodoActionResult = {
@@ -12,34 +12,35 @@ type TodoActionResult = {
 
 export async function createVehicleTodo(
   carId: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<TodoActionResult> {
   try {
     const { userId } = await requireUser();
 
     const car = await writeClient.fetch(
       `*[_type == "car" && _id == $carId && owner._ref == $userId][0]{ _id }`,
-      { carId, userId }
+      { carId, userId },
     );
 
     if (!car?._id) {
-      return { success: false, error: "Vehicle not found." };
+      return { success: false, error: "Vozilo ni najdeno." };
     }
 
     const title = String(formData.get("title") || "").trim();
     const description = String(formData.get("description") || "").trim();
     const dueDate = String(formData.get("dueDate") || "").trim();
-    const priority = String(formData.get("priority") || "medium").trim() || "medium";
+    const priority =
+      String(formData.get("priority") || "medium").trim() || "medium";
     const status = String(formData.get("status") || "open").trim() || "open";
     const reminderEnabled = formData.get("reminderEnabled") === "on";
     const reminderOffset = String(formData.get("reminderOffset") || "1week").trim() || "1week";
 
     if (!title) {
-      return { success: false, error: "Title is required." };
+      return { success: false, error: "Ime opravila je obvezno." };
     }
 
     if (!dueDate) {
-      return { success: false, error: "Due date is required." };
+      return { success: false, error: "Datum roka je obvezen." };
     }
 
     await writeClient.create({
@@ -55,7 +56,6 @@ export async function createVehicleTodo(
       user: { _type: "reference", _ref: userId },
     });
 
-    revalidatePath("/dashboard");
     revalidatePath("/todo");
     revalidatePath(`/vehicle/${carId}`);
     revalidatePath(`/vehicle/${carId}/todo`);
@@ -63,6 +63,9 @@ export async function createVehicleTodo(
     return { success: true, error: null, redirectTo: `/vehicle/${carId}/todo` };
   } catch (err) {
     console.error("CREATE TODO ERROR:", err);
-    return { success: false, error: "Failed to create to-do." };
+    return {
+      success: false,
+      error: "Pri dodajanju opravila je prišlo do napake.",
+    };
   }
 }

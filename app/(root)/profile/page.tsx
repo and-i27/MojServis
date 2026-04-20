@@ -18,7 +18,7 @@ export default async function ProfilePage() {
       email,
       provider
     }`,
-    { userId }
+    { userId },
   );
 
   if (!user) {
@@ -29,7 +29,7 @@ export default async function ProfilePage() {
     <section className="main">
       <h1>Profil</h1>
       <p className="text-lg">Uredite svoje osebne podatke</p>
-      <section className="rounded-lg bg-secondary text-primary p-6 shadow-xl">
+      <section className="section-primary">
         <ProfileForm user={user} />
       </section>
     </section>

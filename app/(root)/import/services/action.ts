@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/requireUser";
-import { writeClient } from '@/sanity/lib/WriteClient';
+import { writeClient } from "@/sanity/lib/WriteClient";
 import type { ImportedServiceRow } from "@/lib/serviceImport";
 
 type ImportServiceResult = {
@@ -25,14 +25,16 @@ function normalizeLookupValue(value?: string) {
   return value?.trim().toLowerCase() ?? "";
 }
 
-export async function importVehicleServices(rows: ImportedServiceRow[]): Promise<ImportServiceResult> {
+export async function importVehicleServices(
+  rows: ImportedServiceRow[],
+): Promise<ImportServiceResult> {
   try {
     const { userId } = await requireUser();
 
     if (!Array.isArray(rows) || rows.length === 0) {
       return {
         success: false,
-        error: "No rows selected for import.",
+        error: "Ni izbranih vrstic za uvoz.",
         importedCount: 0,
         skippedCount: 0,
         messages: [],
@@ -47,7 +49,7 @@ export async function importVehicleServices(rows: ImportedServiceRow[]): Promise
         vin,
         odometer
       }`,
-      { userId }
+      { userId },
     );
 
     const carsByPlate = new Map<string, UserCar>();
@@ -74,17 +76,23 @@ export async function importVehicleServices(rows: ImportedServiceRow[]): Promise
     for (const row of rows) {
       if (row.errors.length > 0) {
         skippedCount += 1;
-        messages.push(`Row ${row.rowNumber}: skipped because the row still contains validation errors.`);
+        messages.push(
+          `Vrstica ${row.rowNumber}: preskočena zaradi validacijskih napak.`,
+        );
         continue;
       }
 
       const plateKey = normalizeLookupValue(row.plate);
       const vinKey = normalizeLookupValue(row.vin);
-      const car = (vinKey ? carsByVin.get(vinKey) : undefined) ?? (plateKey ? carsByPlate.get(plateKey) : undefined);
+      const car =
+        (vinKey ? carsByVin.get(vinKey) : undefined) ??
+        (plateKey ? carsByPlate.get(plateKey) : undefined);
 
       if (!car) {
         skippedCount += 1;
-        messages.push(`Row ${row.rowNumber}: no vehicle matched plate \"${row.plate || "-"}\" or VIN \"${row.vin || "-"}\".`);
+        messages.push(
+          `Vrstica ${row.rowNumber}: ni ustreznega vozila, ki bi ustrezal registrski oznaki \"${row.plate || "-"}\" ali VIN-u \"${row.vin || "-"}\".`,
+        );
         continue;
       }
 
@@ -105,8 +113,12 @@ export async function importVehicleServices(rows: ImportedServiceRow[]): Promise
       });
 
       if (Number.isFinite(odometer)) {
-        const currentHighest = highestOdometerByCar.get(car._id) ?? car.odometer ?? 0;
-        highestOdometerByCar.set(car._id, Math.max(currentHighest, odometer as number));
+        const currentHighest =
+          highestOdometerByCar.get(car._id) ?? car.odometer ?? 0;
+        highestOdometerByCar.set(
+          car._id,
+          Math.max(currentHighest, odometer as number),
+        );
       }
 
       importedCount += 1;
@@ -133,7 +145,7 @@ export async function importVehicleServices(rows: ImportedServiceRow[]): Promise
 
     return {
       success: false,
-      error: "Failed to import service records.",
+      error: "Pri uvozu servisnih zapisov je prišlo do napake.",
       importedCount: 0,
       skippedCount: 0,
       messages: [],

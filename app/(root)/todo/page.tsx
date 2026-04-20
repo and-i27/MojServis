@@ -17,15 +17,15 @@ type TodoListItem = {
 };
 
 const statusLabel: Record<string, string> = {
-  open: "Status: open",
-  done: "Status: done",
-  cancelled: "Status: cancelled",
+  open: "Stanje: odprto",
+  done: "Stanje: končano",
+  cancelled: "Stanje: preklicano",
 };
 
 const priorityLabel: Record<string, string> = {
-  low: "low priority",
-  medium: "medium priority",
-  high: "high priority",
+  low: "Nizka prioriteta",
+  medium: "Srednja prioriteta",
+  high: "Visoka prioriteta",
 };
 
 const statusClassName: Record<string, string> = {
@@ -50,57 +50,69 @@ export default async function TodoPage() {
       "carName": car->name,
       "carId": car->_id
     }`,
-    { userId }
+    { userId },
   );
 
   return (
-    <section className="mainContent">
-      <div>
-        <h1 className="heading text-left">All To-do</h1>
-        <p className="text-sm text-[color:var(--muted)]">
-          All reminders and pending work for your vehicles.
-        </p>
-      </div>
+    <section className="main">
+      <h1>Vsa opravila</h1>
+      <p className="text-lg">Vsa opomniki in čakajoča dela za vaša vozila.</p>
 
-      <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
+      <div className="section-primary p-5!">
         {todos.length === 0 ? (
-          <p className="text-sm text-[color:var(--muted)]">No to-do items yet.</p>
+          <p className="text-sm">Ni še dodanih opravil.</p>
         ) : (
           <div className="grid gap-3">
             {todos.map((todo) => (
-              <div key={todo._id} className="rounded-lg border border-[color:var(--border)] p-4">
+              <div
+                key={todo._id}
+                className="rounded-lg bg-background text-secondary p-4 space-y-2"
+              >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <div className="font-medium text-black">{todo.title}</div>
+                    <div className="font-semibold">{todo.title}</div>
                     {todo.carId && (
-                      <Link href={`/vehicle/${todo.carId}`} className="text-sm text-[color:var(--muted)] hover:text-black">
-                        {todo.carName ?? "Vehicle"}
-                      </Link>
+                      <div className="text-sm">
+                        Vozilo:{" "}
+                        <Link
+                          href={`/vehicle/${todo.carId}`}
+                          className="text-sm hover:text-secondary/80"
+                        >
+                          {todo.carName ?? "Vozilo"}
+                        </Link>
+                      </div>
                     )}
                   </div>
                   <div className="flex flex-wrap gap-2 text-xs">
                     <span className="rounded-full bg-neutral-100 px-2 py-1 text-neutral-700">
                       {priorityLabel[todo.priority] ?? todo.priority}
                     </span>
-                    <span className={`rounded-full px-2 py-1 ${statusClassName[todo.status] ?? "bg-neutral-100 text-neutral-700"}`}>
+                    <span
+                      className={`rounded-full px-2 py-1 ${statusClassName[todo.status] ?? "bg-neutral-100 text-neutral-700"}`}
+                    >
                       {statusLabel[todo.status] ?? todo.status}
                     </span>
                   </div>
                 </div>
-                <div className="mt-2 text-sm text-[color:var(--muted)]">
-                  Due {new Date(todo.dueDate).toLocaleString("sl-SI")}
+
+                <div className="border-b"></div>
+
+                <div className="mt-2 text-sm">
+                  Rok: {new Date(todo.dueDate).toLocaleDateString("sl-SI")}
                 </div>
-                {todo.reminderEnabled && (
-                  <div className="mt-1 text-sm text-[color:var(--muted)]">
-                    {reminderOffsetLabel[todo.reminderOffset ?? "1week"] ?? "Email reminder active"}
+                {!todo.reminderEnabled && (
+                  <div className="mt-1 text-sm">
+                    Opomnik:{" "}
+                    {reminderOffsetLabel[todo.reminderOffset ?? "1week"] ??
+                      "E - poštna opombe aktivne"}
                   </div>
                 )}
                 {todo.description && (
-                  <p className="mt-2 text-sm text-[color:var(--muted)]">{todo.description}</p>
+                  <p className="mt-2 text-sm">{todo.description}</p>
                 )}
-                <div className="mt-3">
-                  <Link href={`/todo/${todo._id}`} className="button w-auto">
-                    Open
+                <div className="mt-4 mb-2">
+                  <Link href={`/todo/${todo._id}`} className="btn w-auto">
+                    Podrobnosti
                   </Link>
                 </div>
               </div>

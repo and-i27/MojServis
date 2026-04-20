@@ -23,7 +23,7 @@ export default function CreateVehiclePage() {
       files.map((file) => ({
         name: file.name,
         url: URL.createObjectURL(file),
-      }))
+      })),
     );
   }
 
@@ -53,10 +53,11 @@ export default function CreateVehiclePage() {
   return (
     <section className="main">
       <h1>Dodaj vozilo</h1>
-      <p className="text-lg">
-        Dodajte novo vozilo, da ga lahko spremljate in upravljate z njegovimi storitvami in stroški.
+      <p className="text-lg text-center">
+        Dodajte novo vozilo, da ga lahko spremljate in upravljate z njegovimi
+        storitvami in stroški.
       </p>
-      <section className="rounded-lg bg-secondary text-primary p-6 shadow-xl">
+      <section className="section-primary">
         <form
           className="flex w-full flex-col gap-4"
           onSubmit={handleSubmit}
@@ -65,22 +66,43 @@ export default function CreateVehiclePage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2">
               <label htmlFor="name">Ime *</label>
-              <input id="name" name="name" type="text" className="text-input" required />
+              <input
+                id="name"
+                name="name"
+                type="text"
+                className="text-input"
+                required
+              />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="makeModel">Znamka in model</label>
-              <input id="makeModel" name="makeModel" type="text" className="text-input" />
+              <input
+                id="makeModel"
+                name="makeModel"
+                type="text"
+                className="text-input"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="year">Letnik</label>
-              <input id="year" name="year" type="number" className="text-input" />
+              <input
+                id="year"
+                name="year"
+                type="number"
+                className="text-input"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="plate">Registrska oznaka</label>
-              <input id="plate" name="plate" type="text" className="text-input" />
+              <input
+                id="plate"
+                name="plate"
+                type="text"
+                className="text-input"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -90,7 +112,13 @@ export default function CreateVehiclePage() {
 
             <div className="flex flex-col gap-2">
               <label htmlFor="odometer">Prevoženi km</label>
-              <input id="odometer" name="odometer" type="number" min="0" className="text-input" />
+              <input
+                id="odometer"
+                name="odometer"
+                type="number"
+                min="0"
+                className="text-input"
+              />
             </div>
           </div>
 

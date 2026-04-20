@@ -35,9 +35,10 @@ export default async function Home() {
   const { userId } = await requireUser();
   const { session } = await requireUser();
 
-  const [cars, todos, services]: [CarListItem[], TodoItem[], ServiceItem[]] = await Promise.all([
-    client.fetch(
-      `*[_type == "car" && owner._ref == $userId] | order(_createdAt desc)[0...12]{
+  const [cars, todos, services]: [CarListItem[], TodoItem[], ServiceItem[]] =
+    await Promise.all([
+      client.fetch(
+        `*[_type == "car" && owner._ref == $userId] | order(_createdAt desc)[0...12]{
         _id,
         name,
         "makeModel": coalesce(makeModel, make),
@@ -46,20 +47,20 @@ export default async function Home() {
         notes,
         "imageUrl": images[0].asset->url
       }`,
-      { userId }
-    ),
-    client.fetch(
-      `*[_type == "todo" && user._ref == $userId && status == "open"] | order(dueDate asc)[0...5]{
+        { userId },
+      ),
+      client.fetch(
+        `*[_type == "todo" && user._ref == $userId && status == "open"] | order(dueDate asc)[0...5]{
         _id,
         title,
         dueDate,
         "carName": car->name,
         "carId": car->_id
       }`,
-      { userId }
-    ),
-    client.fetch(
-      `*[_type == "serviceRecord" && user._ref == $userId] | order(date desc)[0...5]{
+        { userId },
+      ),
+      client.fetch(
+        `*[_type == "serviceRecord" && user._ref == $userId] | order(date desc)[0...5]{
         _id,
         title,
         date,
@@ -68,18 +69,23 @@ export default async function Home() {
         "carName": car->name,
         "carId": car->_id
       }`,
-      { userId }
-    ),
-  ]);
+        { userId },
+      ),
+    ]);
 
   return (
     <section className="main">
       <h1>Dobrodošli nazaj, {session.user.name}!</h1>
-      <p className="text-lg">Hiter pregled vaših vozil in nedavnih dejavnosti</p>
+      <p className="text-lg">
+        Hiter pregled vaših vozil in nedavnih dejavnosti
+      </p>
 
       {cars.length === 0 ? (
-        <div className="sm:flex sm:items-center sm:justify-between sm:space-y-0 space-y-3 rounded-lg bg-secondary p-6 text-primary text-sm shadow-xl">
-          <p className="w-fit">Nimate še vozil. Dodajte svoje prvo vozilo, da začnete spremljati storitve in stroške.</p>
+        <div className="section-primary sm:flex sm:items-center sm:justify-between sm:space-y-0 space-y-3 text-sm">
+          <p className="w-fit">
+            Nimate še vozil. Dodajte svoje prvo vozilo, da začnete spremljati
+            storitve in stroške.
+          </p>
           <Link href="/vehicle/create" className="w-full sm:w-auto">
             <button className="btn w-full">Dodaj vozilo</button>
           </Link>
@@ -93,16 +99,22 @@ export default async function Home() {
               <Link
                 key={vehicle._id}
                 href={`/vehicle/${vehicle._id}`}
-                className="rounded-lg bg-secondary text-primary p-4 shadow transition hover:shadow-xl"
+                className="section-primary p-4! shadow! transition-all hover:shadow-xl hover:scale-105"
               >
                 <div
                   className="mb-4 h-32 w-full rounded-md bg-cover bg-center"
-                  style={vehicle.imageUrl ? { backgroundImage: `url(${vehicle.imageUrl})` } : undefined}
+                  style={
+                    vehicle.imageUrl
+                      ? { backgroundImage: `url(${vehicle.imageUrl})` }
+                      : undefined
+                  }
                 />
                 <div className="font-semibold">{title}</div>
                 <div className="mt-2 text-sm">
                   {vehicle.year ? `Letnik ${vehicle.year} - ` : ""}
-                  {vehicle.plate ? `Registrska oznaka: ${vehicle.plate}` : "Brez registrske oznake"}
+                  {vehicle.plate
+                    ? `Registrska oznaka: ${vehicle.plate}`
+                    : "Brez registrske oznake"}
                 </div>
               </Link>
             );
@@ -111,43 +123,74 @@ export default async function Home() {
       )}
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
-        <div className="rounded-lg bg-secondary text-primary p-5 shadow-xl">
+        <div className="section-primary p-5!">
           <div className="font-semibold">Prihajajoča opravila</div>
           <div className="mt-4 grid gap-3 text-sm">
             {todos.length === 0 ? (
               <div>Nimate odprtega opravila.</div>
             ) : (
               todos.map((todo) => (
-                <div key={todo._id} className="flex items-center justify-between gap-3">
+                <div
+                  key={todo._id}
+                  className="flex items-center justify-between gap-3"
+                >
                   <div>
                     <div>{todo.title}</div>
                     {todo.carId && (
-                      <Link href={`/vehicle/${todo.carId}/todo`} className="text-xs hover:text-black">
+                      <Link
+                        href={`/vehicle/${todo.carId}/todo`}
+                        className="hover:text-primary/80"
+                      >
                         {todo.carName ?? "Vehicle"}
                       </Link>
                     )}
                   </div>
-                  <span className="text-black">{new Date(todo.dueDate).toLocaleDateString("sl-SI")}</span>
+                  <span className="text-primary">
+                    {new Date(todo.dueDate).toLocaleDateString("sl-SI")}
+                  </span>
                 </div>
               ))
             )}
           </div>
         </div>
 
-        <div className="rounded-lg bg-secondary text-primary p-5 shadow-xl">
-          <ServiceCostSummary
-            services={services}
-            cars={cars.map((car) => ({
-            _id: car._id,
-            name: car.name,
-            makeModel: car.makeModel,
-            }))}
-            />
+        <div className="section-primary p-5!">
+          <div className="font-semibold">Zadnji servisi</div>
+          <div className="mt-4 grid gap-3 text-sm">
+            {services.length === 0 ? (
+              <div>Nimate še zabeleženih servisov.</div>
+            ) : (
+              services.map((service) => (
+                <div
+                  key={service._id}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <div>{service.title}</div>
+                    {service.carId && (
+                      <Link
+                        href={`/vehicle/${service.carId}/services`}
+                        className="hover:text-primary/80"
+                      >
+                        {service.carName ?? "Vozilo"}
+                      </Link>
+                    )}
+                  </div>
+                  <span className="text-primary">
+                    {typeof service.cost === "number"
+                      ? `${service.cost.toFixed(2)} ${service.currency ?? "EUR"}`
+                      : new Date(service.date).toLocaleDateString("sl-SI")}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="rounded-lg bg-secondary text-primary p-5 text-sm shadow-xl">
-        {cars.length} vozil, {todos.length} odprtih opravil in {services.length} nedavnih vnosov servisa.
+      <div className="section-primary p-5! text-sm">
+        {cars.length} vozil, {todos.length} odprtih opravil in {services.length}{" "}
+        nedavnih vnosov servisa.
       </div>
     </section>
   );
