@@ -22,7 +22,6 @@ export default defineType({
         list: [
           { title: "User", value: "user" },
           { title: "Admin", value: "admin" },
-          { title: "Fleet Manager", value: "fleet_manager" },
         ],
       },
       initialValue: "user",
