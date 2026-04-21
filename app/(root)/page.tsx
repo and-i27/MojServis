@@ -122,12 +122,12 @@ export default async function Home() {
                   <div>
                     <div>{todo.title}</div>
                     {todo.carId && (
-                      <Link href={`/vehicle/${todo.carId}/todo`} className="text-xs hover:text-black">
+                      <Link href={`/vehicle/${todo.carId}/todo`} className="text-sm hover:text-black">
                         {todo.carName ?? "Vehicle"}
                       </Link>
                     )}
                   </div>
-                  <span className="text-black">{new Date(todo.dueDate).toLocaleDateString("sl-SI")}</span>
+                  <span className="">{new Date(todo.dueDate).toLocaleDateString("sl-SI")}</span>
                 </div>
               ))
             )}

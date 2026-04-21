@@ -106,17 +106,17 @@ export default function ServiceCostSummary({
   }, [filteredServices]);
 
   return (
-    <div className="rounded-lg border border-[color:var(--border)] bg-white p-5 shadow-sm">
+    <div className="section-primary">
       <div className="text-sm font-semibold">Stroski</div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label htmlFor="dashboard-car-filter" className="text-xs text-[color:var(--muted)]">
+          <label htmlFor="dashboard-car-filter" className="text-sm text-[color:var(--muted)]">
             Avtomobil
           </label>
           <select
             id="dashboard-car-filter"
-            className="authInput"
+            className="text-input"
             value={selectedCarId}
             onChange={(e) => setSelectedCarId(e.target.value)}
           >
@@ -130,12 +130,12 @@ export default function ServiceCostSummary({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="dashboard-period-filter" className="text-xs text-[color:var(--muted)]">
+          <label htmlFor="dashboard-period-filter" className="text-sm text-[color:var(--muted)]">
             Obdobje
           </label>
           <select
             id="dashboard-period-filter"
-            className="authInput"
+            className="text-input"
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value as PeriodFilter)}
           >
@@ -169,8 +169,8 @@ export default function ServiceCostSummary({
       </div>
 
       {chartData.length > 0 && (
-        <div className="mt-4">
-          <div className="text-xs uppercase tracking-wide text-[color:var(--muted)] mb-2">
+        <div className="mt-4 bg-white rounded-lg border border-[color:var(--border)] p-4">
+          <div className="text-xs uppercase tracking-wide text-[color:var(--muted)] mb-2 ">
             Trend stroškov
           </div>
           <div style={{ width: "100%", height: 300 }}>
@@ -195,7 +195,7 @@ export default function ServiceCostSummary({
           filteredServices.slice(0, 6).map((service) => (
             <div key={service._id} className="flex items-center justify-between gap-3">
               <div>
-                <div className="text-black">{service.title}</div>
+                <div className="">{service.title}</div>
                 {service.carId && (
                   <Link href={`/vehicle/${service.carId}/services`} className="text-xs hover:text-black">
                     {service.carName ?? "Vehicle"}
@@ -203,7 +203,7 @@ export default function ServiceCostSummary({
                 )}
               </div>
               <div className="text-right">
-                <div className="text-black">
+                <div className="">
                   {typeof service.cost === "number"
                     ? `${service.cost.toFixed(2)} ${service.currency ?? "EUR"}`
                     : "Brez stroska"}
