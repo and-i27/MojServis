@@ -154,16 +154,14 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="rounded-lg bg-secondary text-primary p-5 shadow-xl">
-          <ServiceCostSummary
-            services={services}
-            cars={cars.map((car) => ({
+        <ServiceCostSummary
+          services={services}
+          cars={cars.map((car) => ({
             _id: car._id,
             name: car.name,
             makeModel: car.makeModel,
-            }))}
-            />
-        </div>
+          }))}
+        />
       </div>
 
       <div className="section-primary p-5! text-sm">
