@@ -1,7 +1,9 @@
+import VehicleImageGallery from "@/app/components/VehicleImageGallery";
+import VehicleVinDetailsDialog from "@/app/components/VehicleVinDetailsDialog";
+import { client } from "@/sanity/lib/client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import VehicleImageGallery from "@/app/components/VehicleImageGallery";
+
 type CarDetail = {
   _id: string;
   name: string;
@@ -45,13 +47,13 @@ export default async function VehiclePage({
       <h1>{title}</h1>
       <p className="text-lg">Podrobnosti o vozilu</p>
       <p>
-        {car.notes && <span className="font-semibold">Vaše opombe: </span>}
+        {car.notes && <span className="font-semibold">Vase opombe: </span>}
         {car.notes ||
           "Zgodovina servisov, pregledov in dokumentov na enem mestu."}
       </p>
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="overflow-hidden section-primary p-0!">
+        <div className="section-primary overflow-hidden p-0!">
           <VehicleImageGallery title={title} images={car.imageUrls ?? []} />
         </div>
 
@@ -75,8 +77,11 @@ export default async function VehiclePage({
                 <span>VIN</span>
                 <span className="text-right">{car.vin ?? "-"}</span>
               </div>
+              {car.vin && (
+                <VehicleVinDetailsDialog vin={car.vin} initialYear={car.year} />
+              )}
               <div className="flex items-center justify-between gap-4">
-                <span>Prevoženih kilometrov</span>
+                <span>Prevozenih kilometrov</span>
                 <span className="text-right">
                   {car.odometer ? car.odometer.toLocaleString("sl-SI") : "-"} km
                 </span>
@@ -86,22 +91,22 @@ export default async function VehiclePage({
 
           <div className="section-primary p-5!">
             <div className="font-semibold">Dejanja</div>
-            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-4 sm:-mt-2 h-full">
+            <div className="mt-4 flex h-full flex-col items-center space-y-4 sm:-mt-2 sm:flex-row sm:space-x-4 sm:space-y-0">
               <Link
                 href={`/vehicle/${car._id}/services`}
-                className="btn text-center w-full sm:w-1/3"
+                className="btn w-full text-center sm:w-1/3"
               >
                 Servisi
               </Link>
               <Link
                 href={`/vehicle/${car._id}/todo`}
-                className="btn text-center w-full sm:w-1/3"
+                className="btn w-full text-center sm:w-1/3"
               >
                 Opravila
               </Link>
               <Link
                 href={`/vehicle/${car._id}/edit`}
-                className="btn text-center w-full sm:w-1/3"
+                className="btn w-full text-center sm:w-1/3"
               >
                 Uredi vozilo
               </Link>
@@ -111,7 +116,7 @@ export default async function VehiclePage({
       </div>
 
       <div className="section-primary p-5!">
-        Za to vozilo si shranite račune, poročila o pregledu in zgodovino
+        Za to vozilo si shranite racune, porocila o pregledu in zgodovino
         servisiranja.
       </div>
     </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import VinInputField from "@/app/components/VinInputField";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createCar } from "./action";
@@ -55,7 +56,7 @@ export default function CreateVehiclePage() {
       <h1>Dodaj vozilo</h1>
       <p className="text-lg text-center">
         Dodajte novo vozilo, da ga lahko spremljate in upravljate z njegovimi
-        storitvami in stroški.
+        storitvami in stroski.
       </p>
       <section className="section-primary">
         <form
@@ -87,12 +88,7 @@ export default function CreateVehiclePage() {
 
             <div className="flex flex-col gap-2">
               <label htmlFor="year">Letnik</label>
-              <input
-                id="year"
-                name="year"
-                type="number"
-                className="text-input"
-              />
+              <input id="year" name="year" type="number" className="text-input" />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -105,13 +101,10 @@ export default function CreateVehiclePage() {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="vin">VIN</label>
-              <input id="vin" name="vin" type="text" className="text-input" />
-            </div>
+            <VinInputField />
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="odometer">Prevoženi km</label>
+              <label htmlFor="odometer">Prevozeni km</label>
               <input
                 id="odometer"
                 name="odometer"
@@ -134,11 +127,11 @@ export default function CreateVehiclePage() {
               onChange={handleImageChange}
             />
             {previews.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 h-fit">
+              <div className="grid h-fit grid-cols-2 gap-3 sm:grid-cols-4">
                 {previews.map((preview) => (
                   <div
                     key={preview.url}
-                    className=" rounded-lg border border-neutral-200 bg-white"
+                    className="rounded-lg border border-neutral-200 bg-white"
                   >
                     <div className="relative h-32 w-full">
                       <Image
@@ -146,7 +139,7 @@ export default function CreateVehiclePage() {
                         alt={preview.name}
                         fill
                         unoptimized
-                        className="object-cover rounded-t-lg"
+                        className="rounded-t-lg object-cover"
                       />
                     </div>
                     <p className="truncate px-2 py-1 text-xs text-neutral-600">

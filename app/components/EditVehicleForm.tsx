@@ -1,13 +1,14 @@
-﻿"use client";
+"use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import VinInputField from "@/app/components/VinInputField";
 import {
   deleteVehicle,
   removeVehicleImage,
   updateVehicle,
 } from "@/app/(root)/vehicle/[id]/edit/action";
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 type VehicleImage = {
   url: string;
@@ -81,7 +82,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
     if (saving || deleting || removingImageRef) return;
 
     const confirmed = window.confirm(
-      "Ali ste prepričani, da želite odstraniti to sliko vozila?",
+      "Ali ste prepricani, da zelite odstraniti to sliko vozila?",
     );
 
     if (!confirmed) {
@@ -106,7 +107,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
     if (saving || deleting || removingImageRef) return;
 
     const confirmed = window.confirm(
-      "Ali ste prepričani, da želite izbrisati to vozilo? Tega ni mogoče razveljaviti.",
+      "Ali ste prepricani, da zelite izbrisati to vozilo? Tega ni mogoce razveljaviti.",
     );
 
     if (!confirmed) {
@@ -135,7 +136,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
   return (
     <section className="main">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="sm:w-1/2 text-center">
+        <div className="text-center sm:w-1/2">
           <h1>Uredi {vehicle.name}</h1>
           <p className="text-lg">
             Uredite podatke o vozilu, dodajte ali odstranite slike in dodajte
@@ -144,7 +145,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
         </div>
         <Link
           href={`/vehicle/${vehicle._id}`}
-          className="btn text-center w-full sm:w-auto"
+          className="btn w-full text-center sm:w-auto"
         >
           Nazaj na vozilo
         </Link>
@@ -152,7 +153,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
 
       <div className="border-b"></div>
 
-      <section className="w-full section-primary">
+      <section className="section-primary w-full">
         <form
           className="flex w-full flex-col gap-4"
           onSubmit={handleSubmit}
@@ -204,19 +205,10 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="vin">VIN</label>
-              <input
-                id="vin"
-                name="vin"
-                type="text"
-                className="text-input"
-                defaultValue={vehicle.vin ?? ""}
-              />
-            </div>
+            <VinInputField initialVin={vehicle.vin ?? ""} />
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="odometer">Prevoženi km</label>
+              <label htmlFor="odometer">Prevozeni km</label>
               <input
                 id="odometer"
                 name="odometer"
@@ -251,11 +243,9 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
                           unoptimized
                           className="object-cover transition group-hover:scale-[1.02]"
                         />
-                        <div className="absolute inset-0 flex items-center bg-black/0 p-2 transition group-hover:bg-black/35 group-hover:cursor-pointer">
-                          <span className="rounded bg-secondary/65 px-2 py-1 mx-auto text-[11px] text-primary opacity-0 transition group-hover:opacity-100">
-                            {isRemoving
-                              ? "Odstranjevanje..."
-                              : "Odstrani sliko"}
+                        <div className="absolute inset-0 flex items-center bg-black/0 p-2 transition group-hover:cursor-pointer group-hover:bg-black/35">
+                          <span className="mx-auto rounded bg-secondary/65 px-2 py-1 text-[11px] text-primary opacity-0 transition group-hover:opacity-100">
+                            {isRemoving ? "Odstranjevanje..." : "Odstrani sliko"}
                           </span>
                         </div>
                       </div>
@@ -267,7 +257,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
           )}
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="images">Dodaj več slik</label>
+            <label htmlFor="images">Dodaj vec slik</label>
             <input
               id="images"
               name="images"
@@ -329,7 +319,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
               type="button"
               onClick={handleDelete}
             >
-              {deleting ? "Brisanje..." : "Izbriši vozilo"}
+              {deleting ? "Brisanje..." : "Izbrisi vozilo"}
             </button>
           </div>
         </form>
