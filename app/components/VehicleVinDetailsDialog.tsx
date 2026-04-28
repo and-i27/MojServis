@@ -43,13 +43,20 @@ export default function VehicleVinDetailsDialog({
             error?: string;
           };
 
-      if (!response.ok || !("makeModel" in data)) {
-        setResult(null);
-        setError(data.error || "Podatkov iz VIN ni bilo mogoče pridobiti.");
+      if ("makeModel" in data && response.ok) {
+        setResult(data);
         return;
       }
 
-      setResult(data);
+      const errorMessage =
+        "error" in data && typeof data.error === "string"
+          ? data.error
+          : "Podatkov iz VIN ni bilo mogoče pridobiti.";
+
+      if (!response.ok || !("makeModel" in data)) {
+        setResult(null);
+        setError(errorMessage);
+      }
     } catch (lookupError) {
       console.error("VIN DETAILS LOOKUP ERROR:", lookupError);
       setResult(null);
