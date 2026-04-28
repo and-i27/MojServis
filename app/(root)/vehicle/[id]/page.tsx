@@ -47,7 +47,7 @@ export default async function VehiclePage({
       <h1>{title}</h1>
       <p className="text-lg">Podrobnosti o vozilu</p>
       <p>
-        {car.notes && <span className="font-semibold">Vase opombe: </span>}
+        {car.notes && <span className="font-semibold">Vaše opombe: </span>}
         {car.notes ||
           "Zgodovina servisov, pregledov in dokumentov na enem mestu."}
       </p>
@@ -81,7 +81,7 @@ export default async function VehiclePage({
                 <VehicleVinDetailsDialog vin={car.vin} initialYear={car.year} />
               )}
               <div className="flex items-center justify-between gap-4">
-                <span>Prevozenih kilometrov</span>
+                <span>Prevoženih kilometrov</span>
                 <span className="text-right">
                   {car.odometer ? car.odometer.toLocaleString("sl-SI") : "-"} km
                 </span>
@@ -116,7 +116,7 @@ export default async function VehiclePage({
       </div>
 
       <div className="section-primary p-5!">
-        Za to vozilo si shranite racune, porocila o pregledu in zgodovino
+        Za to vozilo si shranite račune, poročila o pregledu in zgodovino
         servisiranja.
       </div>
     </section>

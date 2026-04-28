@@ -56,7 +56,7 @@ export default function CreateVehiclePage() {
       <h1>Dodaj vozilo</h1>
       <p className="text-lg text-center">
         Dodajte novo vozilo, da ga lahko spremljate in upravljate z njegovimi
-        storitvami in stroski.
+        storitvami in stroški.
       </p>
       <section className="section-primary">
         <form
@@ -104,7 +104,7 @@ export default function CreateVehiclePage() {
             <VinInputField />
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="odometer">Prevozeni km</label>
+              <label htmlFor="odometer">Prevoženi km</label>
               <input
                 id="odometer"
                 name="odometer"

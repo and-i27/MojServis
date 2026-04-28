@@ -12,15 +12,15 @@ function normalizeVin(vin: string) {
 
 function getVinMessage(vin: string) {
   if (!vin) {
-    return "VIN je opcijski, vendar priporocen za poznejsi pregled podatkov.";
+    return "VIN je opcijski, vendar priporočljiv za poznejši pregled podatkov.";
   }
 
   if (/[IOQ]/.test(vin)) {
-    return "VIN ne sme vsebovati crk I, O ali Q.";
+    return "VIN ne sme vsebovati črk I, O ali Q.";
   }
 
   if (!/^[A-HJ-NPR-Z0-9]+$/.test(vin)) {
-    return "VIN lahko vsebuje samo velike crke in stevilke.";
+    return "VIN lahko vsebuje samo velike črke in številke.";
   }
 
   if (vin.length < 17) {
@@ -31,7 +31,7 @@ function getVinMessage(vin: string) {
     return `VIN je predolg. Trenutno: ${vin.length}/17 znakov.`;
   }
 
-  return "VIN izgleda pravilno.";
+  return "VIN je videti pravilen.";
 }
 
 export default function VinInputField({
@@ -40,7 +40,7 @@ export default function VinInputField({
   const [value, setValue] = useState(initialVin);
   const normalized = useMemo(() => normalizeVin(value), [value]);
   const message = getVinMessage(normalized);
-  const isValid = normalized.length === 17 && message === "VIN izgleda pravilno.";
+  const isValid = normalized.length === 17 && message === "VIN je videti pravilen.";
 
   return (
     <div className="flex flex-col gap-2">

@@ -30,7 +30,7 @@ const Navbar = async () => {
               {userRole === "admin" && (
                 <Link href="/admin">
                   <button className="btn min-w-30 bg-red-600 hover:bg-red-700">
-                    Nadzorna plosca
+                    Nadzorna plošča
                   </button>
                 </Link>
               )}
@@ -65,7 +65,7 @@ const Navbar = async () => {
               {userRole === "admin" && (
                 <Link href="/admin">
                   <button className="btn w-full bg-red-600 hover:bg-red-700">
-                    Nadzorna plosca
+                    Nadzorna plošča
                   </button>
                 </Link>
               )}

@@ -1,0 +1,23 @@
+export type VinLookupResult = {
+  vin: string;
+  year: number | null;
+  make: string | null;
+  model: string | null;
+  makeModel: string;
+  bodyClass: string | null;
+  vehicleType: string | null;
+  manufacturer: string | null;
+  plantCountry: string | null;
+  plantCity: string | null;
+  series: string | null;
+  trim: string | null;
+  driveType: string | null;
+  fuelType: string | null;
+  engineCylinders: string | null;
+  engineKw: string | null;
+  engineHp: string | null;
+  errorCode: string | null;
+  errorText: string | null;
+  additionalErrorText: string | null;
+  possibleValues: string | null;
+};

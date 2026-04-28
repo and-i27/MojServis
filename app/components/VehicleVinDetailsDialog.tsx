@@ -2,34 +2,11 @@
 
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { VinLookupResult } from "@/lib/vin/types";
 
 type VehicleVinDetailsDialogProps = {
   vin?: string;
   initialYear?: number;
-};
-
-type VinLookupResult = {
-  vin: string;
-  year: number | null;
-  make: string | null;
-  model: string | null;
-  makeModel: string;
-  bodyClass: string | null;
-  vehicleType: string | null;
-  manufacturer: string | null;
-  plantCountry: string | null;
-  plantCity: string | null;
-  series: string | null;
-  trim: string | null;
-  driveType: string | null;
-  fuelType: string | null;
-  engineCylinders: string | null;
-  engineKw: string | null;
-  engineHp: string | null;
-  errorCode: string | null;
-  errorText: string | null;
-  additionalErrorText: string | null;
-  possibleValues: string | null;
 };
 
 function normalizeVin(vin: string) {
@@ -68,7 +45,7 @@ export default function VehicleVinDetailsDialog({
 
       if (!response.ok || !("makeModel" in data)) {
         setResult(null);
-        setError(data.error || "Podatkov iz VIN ni bilo mogoce pridobiti.");
+        setError(data.error || "Podatkov iz VIN ni bilo mogoče pridobiti.");
         return;
       }
 
@@ -76,7 +53,7 @@ export default function VehicleVinDetailsDialog({
     } catch (lookupError) {
       console.error("VIN DETAILS LOOKUP ERROR:", lookupError);
       setResult(null);
-      setError("Pri pridobivanju VIN podatkov je prislo do napake.");
+      setError("Pri pridobivanju VIN podatkov je prišlo do napake.");
     } finally {
       setLoading(false);
     }
@@ -115,7 +92,7 @@ export default function VehicleVinDetailsDialog({
             <div className="mt-5 flex flex-col gap-3 rounded-lg bg-background/12 p-4 sm:flex-row sm:items-end">
               <div className="flex-1">
                 <label htmlFor="vin-lookup-year" className="mb-2 block text-sm">
-                  Letnik za natancnejsi decode
+                  Letnik za natančnejši prikaz
                 </label>
                 <input
                   id="vin-lookup-year"
@@ -133,7 +110,7 @@ export default function VehicleVinDetailsDialog({
                 disabled={loading}
               >
                 <Search size={16} />
-                {loading ? "Pridobivam..." : "Osvezi podatke"}
+                {loading ? "Pridobivam..." : "Osveži podatke"}
               </button>
             </div>
 
@@ -209,7 +186,7 @@ export default function VehicleVinDetailsDialog({
                     )}
                     {result.possibleValues && (
                       <p className="mt-2 text-sm">
-                        Mozne vrednosti: {result.possibleValues}
+                        Možne vrednosti: {result.possibleValues}
                       </p>
                     )}
                   </div>

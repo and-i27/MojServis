@@ -82,7 +82,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
     if (saving || deleting || removingImageRef) return;
 
     const confirmed = window.confirm(
-      "Ali ste prepricani, da zelite odstraniti to sliko vozila?",
+      "Ali ste prepričani, da želite odstraniti to sliko vozila?",
     );
 
     if (!confirmed) {
@@ -107,7 +107,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
     if (saving || deleting || removingImageRef) return;
 
     const confirmed = window.confirm(
-      "Ali ste prepricani, da zelite izbrisati to vozilo? Tega ni mogoce razveljaviti.",
+      "Ali ste prepričani, da želite izbrisati to vozilo? Tega ni mogoče razveljaviti.",
     );
 
     if (!confirmed) {
@@ -208,7 +208,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
             <VinInputField initialVin={vehicle.vin ?? ""} />
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="odometer">Prevozeni km</label>
+              <label htmlFor="odometer">Prevoženi km</label>
               <input
                 id="odometer"
                 name="odometer"
@@ -257,7 +257,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
           )}
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="images">Dodaj vec slik</label>
+            <label htmlFor="images">Dodaj več slik</label>
             <input
               id="images"
               name="images"
@@ -319,7 +319,7 @@ export default function EditVehicleForm({ vehicle }: EditVehicleFormProps) {
               type="button"
               onClick={handleDelete}
             >
-              {deleting ? "Brisanje..." : "Izbrisi vozilo"}
+              {deleting ? "Brisanje..." : "Izbriši vozilo"}
             </button>
           </div>
         </form>
